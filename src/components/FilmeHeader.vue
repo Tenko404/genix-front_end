@@ -258,11 +258,11 @@ export default {
   align-items: center;
   background-color: var(--search-bg);
   border-radius: 30px;
-  padding: 0.1rem 1rem;
+  padding: 0.5rem;
   border: 1px solid var(--border-color);
   transition: border-color 0.2s ease-in-out;
-  overflow: hidden;
   margin-left: 50px;
+  min-width: 300px;
 }
 
 .search-bar:hover {
@@ -275,13 +275,13 @@ export default {
   outline: none;
   color: var(--text-color);
   font-size: 1rem;
-  padding: 0.7rem 1rem;
-  width: 250px;
+  padding: 0.2rem 0.5rem;
+  width: 100%;
   transition: width 0.3s ease-in-out;
 }
 
 .search-input:focus {
-  width: 300px;
+  width: 100%;
 }
 
 /* Placeholder do input */
@@ -297,7 +297,10 @@ export default {
   cursor: pointer;
   transition: color 0.2s ease-in-out;
   padding: 0.5rem;
-  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
 }
 
 .search-button:hover {
@@ -305,9 +308,13 @@ export default {
 }
 
 /* Ícone de busca */
-.fas {
+.search-button .fas {
   color: var(--secondary-text);
   font-size: 1.1rem;
+}
+
+.search-button:hover .fas {
+  color: var(--text-color);
 }
 
 .dropdown-menu {

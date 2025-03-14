@@ -179,6 +179,20 @@ class MovieService {
                 country: "EUA",
                 language: "Inglês"
             },
+            {
+                id: 14,
+                title: "FLOW",
+                year: 2024,
+                rating: 7.5,
+                duration: "1h 45min",
+                description: "Em um futuro próximo onde a música se tornou ilegal, uma jovem descobre que tem o poder de criar música através da dança. Ela se junta a um grupo de rebeldes que usam a música como forma de resistência.",
+                poster: "https://maceioshopping.com/app/uploads/2025/02/flow-poster.jpg",
+                genres: ["Science-Fiction", "Musical", "Drame"],
+                director: "David Merlet",
+                cast: ["Mehdi Kerkouche", "Fanny Sage", "Merlin Camozzi"],
+                country: "France",
+                language: "Français"
+            },
         ];
     }
 
@@ -186,7 +200,7 @@ class MovieService {
     async getFeaturedMovie() {
         try {
             // Return O Senhor dos Anéis as the featured movie
-            const featuredMovie = this.mockMovies.find(movie => movie.title === "Parasita");
+            const featuredMovie = this.mockMovies.find(movie => movie.title === "FLOW");
             if (!featuredMovie) {
                 throw new Error('Filme em destaque não encontrado');
             }
