@@ -2,7 +2,7 @@
     <div class="party-container">
         <div class="party-header">
             <h1>Party Mode</h1>
-            <p>Assista a filmes com seus amigos!</p>
+            <p>Assista a filmes com seus amigos baseado em seus gostos!</p>
         </div>
 
         <!-- Party Creation/Joining Section -->
