@@ -14,9 +14,6 @@
         <a href="/sobre" aria-label="Ir para página Sobre">Sobre</a>
         <!-- Link para a página "Sobre" com um texto alternativo para acessibilidade -->
         
-        <a href="/aplicativos" aria-label="Ir para página Aplicativos">Aplicativos</a>
-        <!-- Link para a página "Aplicativos" com um texto alternativo para acessibilidade -->
-        
         <a href="/contato" aria-label="Ir para página Contato">Contato</a>
         <!-- Link para a página "Contato" com um texto alternativo para acessibilidade -->
       </nav>
@@ -99,15 +96,19 @@ export default {
 .footer {
   background-color: var(--header-bg);
   color: var(--text-color);
-  padding: 2rem;
+  padding: 1.5rem;
   text-align: center;
   border-top: 1px solid var(--border-color);
-  min-height: 137px;
+  margin-top: auto;
+  width: 100%;
 }
 
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* Navegação */
@@ -115,41 +116,58 @@ export default {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin-bottom: 1rem;
 }
 
 .footer-links a {
   color: var(--text-color);
   text-decoration: none;
-  transition: color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.9rem;
 }
 
 .footer-links a:hover {
-  color: var(--text-color);
-  opacity: 0.8;
+  color: var(--primary-color);
+  transform: translateY(-2px);
 }
 
 /* Redes sociais */
 .footer-social {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
   font-size: 1.2rem;
 }
 
 .footer-social a {
   color: var(--secondary-text);
-  transition: color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem;
+  border-radius: 50%;
 }
 
 .footer-social a:hover {
-  color: var(--text-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  background-color: var(--hover-bg);
 }
 
 /* Copyright */
 .footer-copyright {
   font-size: 0.8rem;
   color: var(--secondary-text);
-  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 1rem;
+  }
+  
+  .footer-links {
+    gap: 1rem;
+  }
+  
+  .footer-social {
+    gap: 1rem;
+  }
 }
 </style>

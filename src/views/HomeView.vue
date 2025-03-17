@@ -10,12 +10,19 @@
             type="text"
             v-model="searchQuery" 
             @input="handleSearch"
+            @keyup.enter="searchMovies"
             placeholder="Buscar filmes..." 
             class="search-input"
             aria-label="Campo de busca de filmes"
+            autocomplete="off"
           />
-          <button @click="searchMovies" class="search-button" aria-label="Buscar">
-            <i class="fas fa-search"></i>
+          <button 
+            @click="searchMovies" 
+            class="search-button" 
+            aria-label="Buscar"
+            :disabled="loading"
+          >
+            <i :class="loading ? 'fas fa-spinner fa-spin' : 'fas fa-search'"></i>
           </button>
         </div>
       </div>
@@ -33,56 +40,63 @@
       </div>
 
       <template v-else>
-        <div v-if="featuredMovie" class="featured-movie">
-          <div class="featured-content">
-            <div class="featured-poster">
-              <img :src="featuredMovie.poster" :alt="featuredMovie.title" />
-            </div>
-            <div class="featured-info">
-              <h2>{{ featuredMovie.title }}</h2>
-              <p class="movie-description">{{ featuredMovie.description }}</p>
-              <div class="movie-meta">
-                <span>{{ featuredMovie.year }}</span>
-                <span>{{ featuredMovie.duration }}</span>
-                <span>
-                  <i class="fas fa-star"></i> {{ featuredMovie.rating }}
-                </span>
+        <div v-if="searchQuery && !trendingMovies.length" class="no-results">
+          <i class="fas fa-search"></i>
+          <p>Nenhum filme encontrado para "{{ searchQuery }}"</p>
+        </div>
+
+        <template v-else>
+          <div v-if="featuredMovie" class="featured-movie">
+            <div class="featured-content">
+              <div class="featured-poster">
+                <img :src="featuredMovie.poster" :alt="featuredMovie.title" />
               </div>
-              <div class="featured-actions">
-                <button class="action-button party" @click="startParty(featuredMovie)">
-                  <i class="fas fa-users"></i> Iniciar Party
-                </button>
-                <button class="action-button details" @click="viewDetails(featuredMovie)">
-                  <i class="fas fa-info-circle"></i> Ver Detalhes
-                </button>
+              <div class="featured-info">
+                <h2>{{ featuredMovie.title }}</h2>
+                <p class="movie-description">{{ featuredMovie.description }}</p>
+                <div class="movie-meta">
+                  <span>{{ featuredMovie.year }}</span>
+                  <span>{{ featuredMovie.duration }}</span>
+                  <span>
+                    <i class="fas fa-star"></i> {{ featuredMovie.rating }}
+                  </span>
+                </div>
+                <div class="featured-actions">
+                  <button class="action-button party" @click="startParty(featuredMovie)">
+                    <i class="fas fa-users"></i> Iniciar Party
+                  </button>
+                  <button class="action-button details" @click="viewDetails(featuredMovie)">
+                    <i class="fas fa-info-circle"></i> Ver Detalhes
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <MovieCarousel 
-          v-if="trendingMovies.length"
-          title="Tendências" 
-          :movies="trendingMovies" 
-        />
+          <MovieCarousel 
+            v-if="trendingMovies.length"
+            title="Tendências" 
+            :movies="trendingMovies" 
+          />
 
-        <MovieCarousel 
-          v-if="recommendedMovies.length"
-          title="Recomendados" 
-          :movies="recommendedMovies" 
-        />
+          <MovieCarousel 
+            v-if="!searchQuery && recommendedMovies.length"
+            title="Recomendados" 
+            :movies="recommendedMovies" 
+          />
 
-        <MovieCarousel 
-          v-if="newReleases.length"
-          title="Lançamentos" 
-          :movies="newReleases" 
-        />
+          <MovieCarousel 
+            v-if="!searchQuery && newReleases.length"
+            title="Lançamentos" 
+            :movies="newReleases" 
+          />
 
-        <MovieCarousel 
-          v-if="topRatedMovies.length"
-          title="Mais Bem Avaliados" 
-          :movies="topRatedMovies" 
-        />
+          <MovieCarousel 
+            v-if="!searchQuery && topRatedMovies.length"
+            title="Mais Bem Avaliados" 
+            :movies="topRatedMovies" 
+          />
+        </template>
       </template>
     </div>
   </div>
@@ -144,13 +158,24 @@ export default {
       }
     },
     handleSearch() {
-      // Implement debounced search
+      // Clear previous timeout
       if (this.searchTimeout) {
         clearTimeout(this.searchTimeout);
       }
+
+      // If search is empty, load default content
+      if (!this.searchQuery.trim()) {
+        this.loadMovies();
+        return;
+      }
+
+      // Set loading state
+      this.loading = true;
+
+      // Debounce search
       this.searchTimeout = setTimeout(() => {
         this.searchMovies();
-      }, 300);
+      }, 500);
     },
     async searchMovies() {
       if (!this.searchQuery.trim()) {
@@ -160,9 +185,13 @@ export default {
 
       try {
         this.loading = true;
+        this.error = null;
         const results = await MovieService.searchMovies(this.searchQuery);
         this.trendingMovies = results;
         this.featuredMovie = null;
+        this.recommendedMovies = [];
+        this.newReleases = [];
+        this.topRatedMovies = [];
       } catch (error) {
         console.error('Erro ao buscar filmes:', error);
         this.error = 'Erro ao buscar filmes. Por favor, tente novamente.';
@@ -225,42 +254,13 @@ export default {
 .hero h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;
-  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   opacity: 0.9;
-}
-
-.search-container {
-  display: flex;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.search-input {
-  flex: 1;
-  padding: 1rem 1.5rem;
-  border: none;
-  border-radius: 8px 0 0 8px;
-  font-size: 1.1rem;
-  background: white;
-}
-
-.search-button {
-  padding: 1rem 2rem;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 0 8px 8px 0;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.search-button:hover {
-  background: var(--primary-color-dark);
 }
 
 .content {
@@ -345,6 +345,8 @@ export default {
   align-items: center;
   gap: 0.5rem;
   transition: transform 0.2s ease;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .action-button:hover {
@@ -362,6 +364,71 @@ export default {
   border: 1px solid var(--border-color);
 }
 
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.no-results i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.search-container {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.search-input {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  font-size: 1rem;
+  color: var(--text-color);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.search-button {
+  padding: 1rem 2rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.search-button:hover:not(:disabled) {
+  background: var(--primary-color-dark);
+}
+
 @media (max-width: 768px) {
   .hero {
     height: 50vh;
@@ -373,6 +440,28 @@ export default {
 
   .hero p {
     font-size: 1rem;
+  }
+
+  .search-container {
+    margin: 0 1rem;
+  }
+
+  .search-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.8rem;
+  }
+
+  .search-button {
+    padding: 0.8rem 1.5rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .featured-movie {
+    padding: 2rem 1rem;
+    margin: 1rem 0;
   }
 
   .featured-content {
@@ -391,6 +480,49 @@ export default {
   .action-button {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 40vh;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+  }
+
+  .featured-movie {
+    padding: 1.5rem 1rem;
+  }
+
+  .featured-info h2 {
+    font-size: 1.8rem;
+  }
+
+  .movie-description {
+    font-size: 1rem;
+  }
+
+  .movie-meta {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .search-container {
+    margin: 0 0.5rem;
+  }
+
+  .search-input {
+    padding: 0.7rem;
+  }
+
+  .search-button {
+    padding: 0.7rem 1.2rem;
   }
 }
 </style>

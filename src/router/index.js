@@ -12,13 +12,13 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/tinder_mode',
-    name: 'tinder_mode',
+    path: '/tinder',
+    name: 'tinder',
     component: TinderMode
   },
   {
-    path: '/perfil',
-    name: 'perfil',
+    path: '/profile',
+    name: 'profile',
     component: UsuarioView
   },
   {

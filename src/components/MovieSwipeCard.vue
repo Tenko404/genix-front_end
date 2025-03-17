@@ -42,14 +42,14 @@
         <span>Não Gostei</span>
       </div>
     </div>
-    <div class="swipe-buttons">
-      <button class="swipe-button dislike" @click="dislikeMovie">
-        <i class="fas fa-times"></i>
-      </button>
-      <button class="swipe-button like" @click="likeMovie">
-        <i class="fas fa-heart"></i>
-      </button>
-    </div>
+  </div>
+  <div class="swipe-buttons">
+    <button class="swipe-button dislike" @click="dislikeMovie">
+      <i class="fas fa-times"></i>
+    </button>
+    <button class="swipe-button like" @click="likeMovie">
+      <i class="fas fa-heart"></i>
+    </button>
   </div>
 </template>
 
@@ -171,8 +171,8 @@ export default {
 <style scoped>
 .movie-card {
   position: relative;
-  width: 350px;
-  height: 500px;
+  width: 100%;
+  height: 100%;
   background-color: var(--card-bg);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -191,8 +191,8 @@ export default {
 .movie-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  object-fit: contain;
+  background-color: var(--card-bg);
 }
 
 .movie-overlay {
@@ -216,6 +216,9 @@ export default {
 .movie-info {
   color: white;
   width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .movie-title {
@@ -268,6 +271,7 @@ export default {
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .swipe-overlay i {
@@ -289,20 +293,18 @@ export default {
 }
 
 .swipe-buttons {
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
   gap: 2rem;
   padding: 1rem;
-  z-index: 2;
+  margin-top: 1.5rem;
+  box-sizing: border-box;
 }
 
 .swipe-button {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -310,7 +312,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -320,21 +322,16 @@ export default {
 }
 
 .swipe-button.like {
-  background: #4CAF50;
+  background: var(--success-color, #4CAF50);
   color: white;
 }
 
 .swipe-button.dislike {
-  background: #F44336;
+  background: var(--error-color, #F44336);
   color: white;
 }
 
 @media (max-width: 768px) {
-  .movie-card {
-    width: 300px;
-    height: 450px;
-  }
-
   .movie-title {
     font-size: 1.2rem;
   }
@@ -345,7 +342,6 @@ export default {
 
   .genre-tag {
     font-size: 0.7rem;
-    padding: 0.1rem 0.4rem;
   }
 
   .movie-description {
@@ -361,8 +357,8 @@ export default {
   }
 
   .swipe-button {
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
     font-size: 1.2rem;
   }
 }

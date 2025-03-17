@@ -128,17 +128,18 @@ export default {
 .tinder-mode {
   min-height: 100vh;
   background: var(--bg-color);
+  display: flex;
+  flex-direction: column;
 }
 
 .hero {
-  height: 30vh;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
-  padding: 0 1rem;
+  padding: 2rem 1rem;
   position: relative;
   overflow: hidden;
 }
@@ -154,17 +155,24 @@ export default {
 }
 
 .content {
-  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .loading, .error {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem;
+  padding: 2rem;
   text-align: center;
   color: var(--text-secondary);
 }
@@ -179,24 +187,30 @@ export default {
 }
 
 .swipe-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: 60vh;
-  position: relative;
+  justify-content: center;
+  padding: 1rem 0;
 }
 
 .card-container {
-  position: relative;
-  width: 350px;
-  height: 500px;
+  width: 100%;
+  aspect-ratio: 2/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .results-container {
-  text-align: center;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
 }
 
 .results-container h2 {
@@ -211,6 +225,7 @@ export default {
   gap: 1.5rem;
   margin-bottom: 2rem;
   justify-content: center;
+  width: 100%;
 }
 
 .liked-movie-card {
@@ -254,8 +269,8 @@ export default {
 }
 
 .no-movies {
-  padding: 4rem 2rem;
   text-align: center;
+  padding: 2rem;
   color: var(--text-secondary);
 }
 
@@ -276,18 +291,15 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .restart-button:hover {
   transform: translateY(-2px);
+  background-color: var(--primary-color-dark);
 }
 
 @media (max-width: 768px) {
-  .hero {
-    height: 25vh;
-  }
-
   .hero-content h1 {
     font-size: 2rem;
   }
@@ -300,29 +312,8 @@ export default {
     padding: 1rem;
   }
 
-  .card-container {
-    width: 300px;
-    height: 450px;
-  }
-
-  .liked-movies-grid {
-    gap: 1rem;
-  }
-
-  .liked-movie-card {
-    flex: 0 0 160px;
-  }
-
-  .liked-movie-card img {
-    height: 240px;
-  }
-
-  .liked-movie-info h3 {
-    font-size: 1rem;
-  }
-
-  .movie-meta {
-    font-size: 0.8rem;
+  .swipe-container {
+    max-width: 350px;
   }
 }
 </style>

@@ -44,33 +44,20 @@ export default {
 
 <style scoped>
 .movie-card {
-    flex: 0 0 200px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.movie-card:hover {
-    transform: scale(1.05);
-}
-
-.movie-poster {
     position: relative;
-    width: 100%;
+    flex: 0 0 200px;
     height: 300px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.movie-poster img {
+.movie-poster {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
-}
-
-.movie-card:hover .movie-poster img {
-    transform: scale(1.1);
 }
 
 .movie-overlay {
@@ -89,6 +76,10 @@ export default {
 
 .movie-card:hover .movie-overlay {
     opacity: 1;
+}
+
+.movie-card:hover .movie-poster {
+    transform: scale(1.05);
 }
 
 .movie-info {
@@ -138,6 +129,7 @@ export default {
     justify-content: center;
     gap: 0.5rem;
     transition: background-color 0.2s ease;
+    min-height: 44px;
 }
 
 .details-button:hover {
@@ -147,18 +139,17 @@ export default {
 @media (max-width: 768px) {
     .movie-card {
         flex: 0 0 150px;
-    }
-
-    .movie-poster {
         height: 225px;
     }
 
     .movie-info h3 {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
     }
 
     .movie-meta {
         font-size: 0.8rem;
+        gap: 0.5rem;
     }
 
     .genre-tag {
@@ -168,7 +159,32 @@ export default {
 
     .details-button {
         padding: 0.4rem;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    .movie-overlay {
+        opacity: 1;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.6));
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-card {
+        flex: 0 0 130px;
+        height: 195px;
+    }
+
+    .movie-info h3 {
+        font-size: 0.8rem;
+    }
+
+    .movie-meta {
+        font-size: 0.7rem;
+    }
+
+    .genre-tag {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.3rem;
     }
 }
 </style> 
