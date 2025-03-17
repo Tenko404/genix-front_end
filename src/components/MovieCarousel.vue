@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style scoped>
-.movie-carousel {
+.carousel-section {
     margin: 2rem 0;
 }
 
@@ -96,7 +96,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     padding: 0 1rem;
 }
 
@@ -142,13 +142,14 @@ export default {
     position: relative;
     overflow-x: auto;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     padding: 0.5rem;
+    margin: 0 -0.5rem;
 }
 
 .carousel-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
 }
 
 .carousel-content {
@@ -158,8 +159,13 @@ export default {
 }
 
 @media (max-width: 768px) {
+    .carousel-section {
+        margin: 1.5rem 0;
+    }
+
     .carousel-header {
         padding: 0 0.5rem;
+        margin-bottom: 1rem;
     }
 
     .carousel-header h2 {
@@ -169,6 +175,55 @@ export default {
     .nav-button {
         width: 36px;
         height: 36px;
+        font-size: 0.9rem;
     }
+
+    .carousel-container {
+        padding: 0.25rem;
+    }
+
+    .carousel-content {
+        gap: 0.75rem;
+        padding: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-section {
+        margin: 1rem 0;
+    }
+
+    .carousel-header {
+        padding: 0 0.25rem;
+    }
+
+    .carousel-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .nav-button {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+    .carousel-container {
+        padding: 0.25rem;
+    }
+
+    .carousel-content {
+        gap: 0.5rem;
+        padding: 0.25rem;
+    }
+}
+
+/* Touch-friendly scrolling */
+.carousel-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+}
+
+.carousel-content > * {
+    scroll-snap-align: start;
 }
 </style> 

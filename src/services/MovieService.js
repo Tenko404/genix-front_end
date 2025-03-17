@@ -12,18 +12,18 @@ class MovieService {
         // Mock data for testing
         this.mockMovies = [
             {
-                id: 1,
-                title: "A Origem",
-                year: 2010,
-                rating: 8.8,
-                duration: "2h 28min",
-                description: "Um ladrão que rouba segredos corporativos através do uso da tecnologia de compartilhamento de sonhos recebe a tarefa inversa de plantar uma ideia na mente de um CEO.",
-                poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-                genres: ["Ação", "Ficção Científica", "Suspense"],
-                director: "Christopher Nolan",
-                cast: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"],
-                country: "EUA",
-                language: "Inglês"
+                id: 14,
+                title: "FLOW",
+                year: 2024,
+                rating: 7.5,
+                duration: "1h 45min",
+                description: "Em um futuro próximo onde a música se tornou ilegal, uma jovem descobre que tem o poder de criar música através da dança. Ela se junta a um grupo de rebeldes que usam a música como forma de resistência.",
+                poster: "https://maceioshopping.com/app/uploads/2025/02/flow-poster.jpg",
+                genres: ["Science-Fiction", "Musical", "Drame"],
+                director: "David Merlet",
+                cast: ["Mehdi Kerkouche", "Fanny Sage", "Merlin Camozzi"],
+                country: "France",
+                language: "Français"
             },
             {
                 id: 2,
@@ -180,18 +180,18 @@ class MovieService {
                 language: "Inglês"
             },
             {
-                id: 14,
-                title: "FLOW",
-                year: 2024,
-                rating: 7.5,
-                duration: "1h 45min",
-                description: "Em um futuro próximo onde a música se tornou ilegal, uma jovem descobre que tem o poder de criar música através da dança. Ela se junta a um grupo de rebeldes que usam a música como forma de resistência.",
-                poster: "https://maceioshopping.com/app/uploads/2025/02/flow-poster.jpg",
-                genres: ["Science-Fiction", "Musical", "Drame"],
-                director: "David Merlet",
-                cast: ["Mehdi Kerkouche", "Fanny Sage", "Merlin Camozzi"],
-                country: "France",
-                language: "Français"
+                id: 1,
+                title: "A Origem",
+                year: 2010,
+                rating: 8.8,
+                duration: "2h 28min",
+                description: "Um ladrão que rouba segredos corporativos através do uso da tecnologia de compartilhamento de sonhos recebe a tarefa inversa de plantar uma ideia na mente de um CEO.",
+                poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+                genres: ["Ação", "Ficção Científica", "Suspense"],
+                director: "Christopher Nolan",
+                cast: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"],
+                country: "EUA",
+                language: "Inglês"
             },
         ];
     }
