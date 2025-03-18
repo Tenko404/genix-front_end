@@ -1,18 +1,23 @@
 <template>
   <div id="app">
+    <!-- Meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <nav class="navbar">
       <div class="nav-content">
+        <!-- Logo linking to home -->
         <router-link to="/" class="nav-logo">
           <img src="@/assets/logo.png" alt="Genix Logo">
         </router-link>
+        <!-- Mobile menu toggle button -->
         <button class="mobile-menu-toggle" @click="toggleMobileMenu" aria-label="Toggle menu">
           <i class="fas fa-bars"></i>
         </button>
         <div class="nav-links" :class="{ 'active': isMobileMenuOpen }">
+          <!-- Close button for mobile menu -->
           <button class="mobile-menu-close" @click="closeMobileMenu" aria-label="Close menu">
             <i class="fas fa-times"></i>
           </button>
+          <!-- Navigation links -->
           <router-link to="/" class="nav-link" @click="closeMobileMenu">
             <i class="fas fa-home mobile-icon"></i>
             <span>Home</span>
@@ -30,6 +35,7 @@
             <span>Profile</span>
           </router-link>
         </div>
+        <!-- Theme toggle button -->
         <button class="theme-toggle" @click="toggleTheme" aria-label="Toggle theme">
           <i :class="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
         </button>
@@ -37,8 +43,10 @@
     </nav>
 
     <main class="main-content">
+      <!-- Router view for displaying current route -->
       <router-view></router-view>
     </main>
+    <!-- Footer component -->
     <FilmeFooter />
   </div>
 </template>
@@ -46,14 +54,14 @@
 <script>
 import FilmeFooter from '@/components/FilmeFooter.vue'
 import { useThemeStore } from '@/stores/themeStore'
-import { RouterView } from 'vue-router'
+// Removed unused import of RouterView
 import { ref } from 'vue'
 
 export default {
   name: 'App',
   components: {
     FilmeFooter,
-    RouterView,
+    // Removed RouterView as it's used directly in the template
   },
   setup() {
     const themeStore = useThemeStore()
@@ -62,10 +70,12 @@ export default {
     // Initialize theme when app starts
     themeStore.initTheme()
 
+    // Toggle mobile menu visibility
     const toggleMobileMenu = () => {
       isMobileMenuOpen.value = !isMobileMenuOpen.value
     }
 
+    // Close mobile menu
     const closeMobileMenu = () => {
       isMobileMenuOpen.value = false
     }
@@ -98,6 +108,7 @@ export default {
 body {
   margin: 0;
   padding: 0;
+  height: 100vh; /* Ensure body takes full height */
   background-color: var(--bg-color);
 }
 
@@ -278,12 +289,12 @@ h1, h2, h3, h4, h5, h6 {
     transition: transform 0.3s ease;
     border-radius: 0 0 8px 0;
   }
-
+  
   .nav-links.active {
     display: flex;
     transform: translateX(0);
   }
-
+  
   .nav-link {
     display: flex;
     align-items: center;
@@ -295,16 +306,16 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.95rem;
     min-height: 36px;
   }
-
+  
   .nav-link:hover {
     background-color: var(--hover-bg);
   }
-
+  
   .nav-link.router-link-active {
     background-color: var(--hover-bg);
     color: var(--primary-color);
   }
-
+  
   .mobile-menu-close {
     top: 0.5rem;
     right: 0.5rem;
@@ -315,7 +326,7 @@ h1, h2, h3, h4, h5, h6 {
   .nav-content {
     padding: 0 0.5rem;
   }
-
+  
   .mobile-menu-toggle {
     font-size: 1.2rem;
   }
@@ -331,7 +342,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.95rem;
     min-height: 36px;
   }
-
+  
   .mobile-icon {
     width: 18px;
     margin-right: 0.75rem;

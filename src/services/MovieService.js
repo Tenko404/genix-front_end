@@ -12,6 +12,34 @@ class MovieService {
         // Mock data for testing
         this.mockMovies = [
             {
+                id: 15,
+                title: "Oppenheimer",
+                year: 2023,
+                rating: 8.8,
+                duration: "3h 1min",
+                description: "A história do físico americano J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica durante a Segunda Guerra Mundial.",
+                poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+                genres: ["Drama", "História", "Biografia"],
+                director: "Christopher Nolan",
+                cast: ["Cillian Murphy", "Emily Blunt", "Robert Downey Jr."],
+                country: "EUA",
+                language: "Inglês"
+            },
+            {
+                id: 16,
+                title: "Dune: Part Two",
+                year: 2024,
+                rating: 8.6,
+                duration: "2h 46min",
+                description: "Paul Atreides se une a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família.",
+                poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
+                genres: ["Ficção Científica", "Aventura", "Drama"],
+                director: "Denis Villeneuve",
+                cast: ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson"],
+                country: "EUA",
+                language: "Inglês"
+            },
+            {
                 id: 14,
                 title: "FLOW",
                 year: 2024,

@@ -36,7 +36,9 @@ export default {
     },
     methods: {
         viewDetails() {
-            this.$router.push(`/movie/${this.movie.id}`);
+            this.$router.push(`/movie/${this.movie.id}`).then(() => {
+                window.scrollTo(0, 0);
+            });
         }
     }
 }

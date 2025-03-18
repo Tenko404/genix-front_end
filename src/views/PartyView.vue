@@ -302,7 +302,9 @@ export default {
         },
 
         startWatching() {
-            this.$router.push(`/watch/${this.matchedMovie.id}`);
+            this.$router.push(`/watch/${this.matchedMovie.id}`).then(() => {
+                window.scrollTo(0, 0);
+            });
         }
     },
     created() {

@@ -54,10 +54,21 @@
         <button @click="$emit('cancel-password-edit')" class="cancel-btn">Cancelar</button>
       </div>
     </div>
+
+    <div v-if="validationErrors.email || validationErrors.password" class="validation-error">
+      {{ validationErrors.email || validationErrors.password }}
+    </div>
+
+    <div v-if="isLoading" class="is-loading">
+      <div class="loading-spinner"></div>
+      Salvando...
+    </div>
   </div>
 </template>
 
 <script>
+import { userService } from '@/services/userService';
+
 export default {
   name: 'PersonalInfoSection',
   props: {
@@ -91,37 +102,94 @@ export default {
       localEmail: this.email,
       localCurrentPassword: this.currentPassword,
       localNewPassword: this.newPassword,
-      localConfirmPassword: this.confirmPassword
+      localConfirmPassword: this.confirmPassword,
+      validationErrors: {
+        email: '',
+        password: ''
+      },
+      isLoading: false
+    }
+  },
+  methods: {
+    validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    },
+    validatePassword(password) {
+      if (password.length < 8) {
+        return 'A senha deve ter pelo menos 8 caracteres';
+      }
+      if (!/[A-Z]/.test(password)) {
+        return 'A senha deve conter pelo menos uma letra maiúscula';
+      }
+      if (!/[a-z]/.test(password)) {
+        return 'A senha deve conter pelo menos uma letra minúscula';
+      }
+      if (!/[0-9]/.test(password)) {
+        return 'A senha deve conter pelo menos um número';
+      }
+      return '';
+    },
+    async handleEmailEdit() {
+      if (this.emailEditingEnabled) {
+        if (!this.validateEmail(this.localEmail)) {
+          this.validationErrors.email = 'Email inválido';
+          return;
+        }
+        this.isLoading = true;
+        try {
+          await userService.updateProfile({ email: this.localEmail });
+          this.$emit('save-email', this.localEmail);
+          this.validationErrors.email = '';
+        } catch (error) {
+          this.validationErrors.email = error.message;
+        } finally {
+          this.isLoading = false;
+        }
+      } else {
+        this.$emit('toggle-email-edit');
+      }
+    },
+    async handlePasswordSave() {
+      if (this.localNewPassword !== this.localConfirmPassword) {
+        this.validationErrors.password = 'As senhas não coincidem';
+        return;
+      }
+      const passwordError = this.validatePassword(this.localNewPassword);
+      if (passwordError) {
+        this.validationErrors.password = passwordError;
+        return;
+      }
+      this.isLoading = true;
+      try {
+        await userService.updatePassword({
+          currentPassword: this.localCurrentPassword,
+          newPassword: this.localNewPassword
+        });
+        this.$emit('save-password', {
+          currentPassword: this.localCurrentPassword,
+          newPassword: this.localNewPassword
+        });
+        this.validationErrors.password = '';
+      } catch (error) {
+        this.validationErrors.password = error.message;
+      } finally {
+        this.isLoading = false;
+      }
     }
   },
   watch: {
     email(newVal) {
-      this.localEmail = newVal
+      this.localEmail = newVal;
     },
     currentPassword(newVal) {
-      this.localCurrentPassword = newVal
+      this.localCurrentPassword = newVal;
     },
     newPassword(newVal) {
-      this.localNewPassword = newVal
+      this.localNewPassword = newVal;
     },
     confirmPassword(newVal) {
-      this.localConfirmPassword = newVal
-    }
-  },
-  methods: {
-    handleEmailEdit() {
-      if (this.emailEditingEnabled) {
-        this.$emit('save-email', this.localEmail)
-      } else {
-        this.$emit('toggle-email-edit')
-      }
-    },
-    handlePasswordSave() {
-      this.$emit('save-password', {
-        currentPassword: this.localCurrentPassword,
-        newPassword: this.localNewPassword,
-        confirmPassword: this.localConfirmPassword
-      })
+      this.localConfirmPassword = newVal;
     }
   }
 }
@@ -312,6 +380,33 @@ export default {
 .cancel-btn:hover {
   background-color: #e53935;
   border-color: #e53935;
+}
+
+.validation-error {
+  color: #ff4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.is-loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media (max-width: 768px) {
