@@ -112,6 +112,8 @@ export default {
   justify-content: center;
   gap: 0.8rem;
   font-weight: 500;
+  height: 60px;
+  width: 100%;
 }
 
 .genre-chip i {
@@ -159,6 +161,7 @@ export default {
   .genre-chip {
     padding: 0.8rem;
     font-size: 0.9rem;
+    height: 50px;
   }
 }
 </style> 
