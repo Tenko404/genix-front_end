@@ -21,7 +21,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
                 genres: ["Drama", "História", "Biografia"],
                 director: "Christopher Nolan",
-                cast: ["Cillian Murphy", "Emily Blunt", "Robert Downey Jr."],
+                cast: [
+                    {
+                        name: "Cillian Murphy",
+                        character: "J. Robert Oppenheimer",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTUxMzU2MTk1OF5BMl5BanBnXkFtZTgwNDgzODU3NzE@._V1_UY317_CR7,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Emily Blunt",
+                        character: "Katherine Oppenheimer",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTUxNDY4MTMzM15BMl5BanBnXkFtZTcwMjg5NzM2Ng@@._V1_UY317_CR5,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Robert Downey Jr.",
+                        character: "Lewis Strauss",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNzg1MTUyNDYxOF5BMl5BanBnXkFtZTgwNTQ4MTE2MjE@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -35,7 +51,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
                 genres: ["Ficção Científica", "Aventura", "Drama"],
                 director: "Denis Villeneuve",
-                cast: ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson"],
+                cast: [
+                    {
+                        name: "Timothée Chalamet",
+                        character: "Paul Atreides",
+                        photo: "https://m.media-amazon.com/images/M/MV5BOWU1Nzg0M2ItYjEzMi00ODliLThkODAtNGEyYzRkZTBmMmEzXkEyXkFqcGdeQXVyNDk2MjQ4Mzk@._V1_UY317_CR13,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Zendaya",
+                        character: "Chani",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMjAxZTk4NDAtYjI3Mi00OTk3LTg0NDEtNWFlNzE5NDM5MWM1XkEyXkFqcGdeQXVyOTI3MjYwOQ@@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Rebecca Ferguson",
+                        character: "Lady Jessica",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNzA4NDA1MTA5NV5BMl5BanBnXkFtZTcwNjMyNTQ3OA@@._V1_UY317_CR6,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -63,7 +95,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
                 genres: ["Ação", "Crime", "Drama"],
                 director: "Christopher Nolan",
-                cast: ["Christian Bale", "Heath Ledger", "Aaron Eckhart"],
+                cast: [
+                    {
+                        name: "Christian Bale",
+                        character: "Bruce Wayne / Batman",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTkxMzk4MjQ4MF5BMl5BanBnXkFtZTcwMzExODQxOA@@._V1_UY317_CR4,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Heath Ledger",
+                        character: "Coringa",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTI2NTY0NzA4MF5BMl5BanBnXkFtZTYwMjE1MDE0._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Aaron Eckhart",
+                        character: "Harvey Dent",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTc4MTAyNzMzNF5BMl5BanBnXkFtZTcwMzQ5MzQzMg@@._V1_UY317_CR8,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -77,7 +125,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
                 genres: ["Aventura", "Drama", "Ficção Científica"],
                 director: "Christopher Nolan",
-                cast: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"],
+                cast: [
+                    {
+                        name: "Matthew McConaughey",
+                        character: "Cooper",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTg1ODg1MzM5Ml5BMl5BanBnXkFtZTgwMDk4OTI1MDE@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Anne Hathaway",
+                        character: "Dr. Amelia Brand",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTRhNzQ3NGMtZmQ1Mi00ZTViLTk3OTgtOTk0YzE2YTgwMmFjXkEyXkFqcGdeQXVyNzg5MzIyOA@@._V1_UY317_CR20,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Jessica Chastain",
+                        character: "Murphy Cooper",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTU1MDM5NjczOF5BMl5BanBnXkFtZTcwOTY2MDE4OA@@._V1_UY317_CR5,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -91,7 +155,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
                 genres: ["Ação", "Ficção Científica"],
                 director: "Lana Wachowski",
-                cast: ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"],
+                cast: [
+                    {
+                        name: "Keanu Reeves",
+                        character: "Neo",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNjUxNDcwMTg4Ml5BMl5BanBnXkFtZTcwMjU4NDYyOA@@._V1_UY317_CR15,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Laurence Fishburne",
+                        character: "Morpheus",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTc0NjczNDc1MV5BMl5BanBnXkFtZTYwMDU0Mjg1._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Carrie-Anne Moss",
+                        character: "Trinity",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTYxMjgwNzEwOF5BMl5BanBnXkFtZTcwNTQ0NzYxMw@@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -105,7 +185,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
                 genres: ["Drama", "Thriller"],
                 director: "David Fincher",
-                cast: ["Brad Pitt", "Edward Norton", "Helena Bonham Carter"],
+                cast: [
+                    {
+                        name: "Brad Pitt",
+                        character: "Tyler Durden",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMjA1MjE2MTQ2MV5BMl5BanBnXkFtZTcwMjE5MDY0Nw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Edward Norton",
+                        character: "Narrador",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTYwNjQ5MTI1NF5BMl5BanBnXkFtZTcwMzU5MTI2Mw@@._V1_UY317_CR16,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Helena Bonham Carter",
+                        character: "Marla Singer",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTUzMzUzMDg5MV5BMl5BanBnXkFtZTcwMzIxNTk3OA@@._V1_UY317_CR3,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -119,7 +215,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/izPNMzffsgZUvlbiYlPxjFr3TAa.jpg",
                 genres: ["Ação", "Aventura", "Fantasia"],
                 director: "Peter Jackson",
-                cast: ["Elijah Wood", "Viggo Mortensen", "Ian McKellen"],
+                cast: [
+                    {
+                        name: "Elijah Wood",
+                        character: "Frodo Baggins",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTM0NDIxMzQ5OF5BMl5BanBnXkFtZTcwNzAyNTA4Nw@@._V1_UY317_CR10,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Viggo Mortensen",
+                        character: "Aragorn",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNDQzOTg4NzA2Nl5BMl5BanBnXkFtZTcwMzkwNjkxMg@@._V1_UY317_CR6,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Ian McKellen",
+                        character: "Gandalf",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTQ2MjgyNjk3MV5BMl5BanBnXkFtZTcwNTA3NTY5Mg@@._V1_UY317_CR10,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -133,7 +245,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
                 genres: ["Crime", "Drama"],
                 director: "Fernando Meirelles",
-                cast: ["Alexandre Rodrigues", "Leandro Firmino", "Matheus Nachtergaele"],
+                cast: [
+                    {
+                        name: "Alexandre Rodrigues",
+                        character: "Buscapé",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTk3NzEyMTI5MV5BMl5BanBnXkFtZTYwNDc4ODc3._V1_UY317_CR19,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Leandro Firmino",
+                        character: "Zé Pequeno",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTkyNDQ3NzAxMV5BMl5BanBnXkFtZTcwODk4NjMzMw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Matheus Nachtergaele",
+                        character: "Sandro Cenoura",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNzM5MDU1NzY0NV5BMl5BanBnXkFtZTcwODk4NjMzMw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "Brasil",
                 language: "Português"
             },
@@ -147,7 +275,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/q6725aR8Zs4IwGMXzZT8aC8lh41.jpg",
                 genres: ["Ação", "Aventura", "Ficção Científica"],
                 director: "Irmãos Russo",
-                cast: ["Robert Downey Jr.", "Chris Evans", "Mark Ruffalo"],
+                cast: [
+                    {
+                        name: "Robert Downey Jr.",
+                        character: "Tony Stark / Iron Man",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNzg1MTUyNDYxOF5BMl5BanBnXkFtZTgwNTQ4MTE2MjE@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Chris Evans",
+                        character: "Steve Rogers / Captain America",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTU2NTg1OTQzMF5BMl5BanBnXkFtZTcwNjIyMjkyMg@@._V1_UY317_CR6,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Mark Ruffalo",
+                        character: "Bruce Banner / Hulk",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNWIzZTI1ODUtZTUzMC00NTdiLWFlOTYtZTg4MGZkYmU4YzNlXkEyXkFqcGdeQXVyNTExOTk5Nzg@._V1_UY317_CR7,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -161,7 +305,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/igw938inb6Fy0YVcwIyxQ7Lu5FO.jpg",
                 genres: ["Comédia", "Drama", "Thriller"],
                 director: "Bong Joon-ho",
-                cast: ["Song Kang-ho", "Lee Sun-kyun", "Cho Yeo-jeong"],
+                cast: [
+                    {
+                        name: "Song Kang-ho",
+                        character: "Ki-taek",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMjI4OTQ5NzE2M15BMl5BanBnXkFtZTgwMTM0Nzk0OTE@._V1_UY317_CR175,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Lee Sun-kyun",
+                        character: "Park Dong-ik",
+                        photo: "https://m.media-amazon.com/images/M/MV5BYmQ3OTZkZDItNDJlYy00NjY5LWE1ZTAtMDc5ZGJmOWVlODYyXkEyXkFqcGdeQXVyNTI5NjIyMw@@._V1_UY317_CR51,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Cho Yeo-jeong",
+                        character: "Park Yeon-kyo",
+                        photo: "https://m.media-amazon.com/images/M/MV5BODI4NDY1NzkyM15BMl5BanBnXkFtZTgwNzQ5MTE0OTE@._V1_UY317_CR175,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "Coreia do Sul",
                 language: "Coreano"
             },
@@ -175,7 +335,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/xLxgVxFWvb9hhUyCDDXxRPPnFck.jpg",
                 genres: ["Crime", "Drama", "Thriller"],
                 director: "Todd Phillips",
-                cast: ["Joaquin Phoenix", "Robert De Niro", "Zazie Beetz"],
+                cast: [
+                    {
+                        name: "Joaquin Phoenix",
+                        character: "Arthur Fleck / Coringa",
+                        photo: "https://m.media-amazon.com/images/M/MV5BZGMyY2Q4NTEtMWVkZS00NzcwLTkzNmQtYzBlMWZhZGNhMDhkXkEyXkFqcGdeQXVyNjk1MjYyNTA@._V1_UY317_CR7,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Robert De Niro",
+                        character: "Murray Franklin",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMjAwNDU3MzcyOV5BMl5BanBnXkFtZTcwMjc0MTIxMw@@._V1_UY317_CR13,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Zazie Beetz",
+                        character: "Sophie Dumond",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTgzODU0NTkxMF5BMl5BanBnXkFtZTgwNzE5NzM0NDM@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -189,7 +365,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/m8eFedsS7vQCZCS8WGp5n1bVD0q.jpg",
                 genres: ["Comédia", "Aventura"],
                 director: "Guel Arraes",
-                cast: ["Matheus Nachtergaele", "Selton Mello", "Denise Fraga"],
+                cast: [
+                    {
+                        name: "Matheus Nachtergaele",
+                        character: "João Grilo",
+                        photo: "https://m.media-amazon.com/images/M/MV5BNzM5MDU1NzY0NV5BMl5BanBnXkFtZTcwODk4NjMzMw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Selton Mello",
+                        character: "Chicó",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTk1NzM4NDg5MV5BMl5BanBnXkFtZTcwODk4NjMzMw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Denise Fraga",
+                        character: "Dora",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMjA3NjYzMzE1MV5BMl5BanBnXkFtZTcwODk4NjMzMw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "Brasil",
                 language: "Português"
             },
@@ -203,7 +395,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
                 genres: ["Animação", "Aventura", "Drama"],
                 director: "Barry Jenkins",
-                cast: ["Aaron Pierre", "Kelvin Harrison Jr.", "Seth Rogen"],
+                cast: [
+                    {
+                        name: "Aaron Pierre",
+                        character: "Mufasa (voz)",
+                        photo: "https://m.media-amazon.com/images/M/MV5BOTE1ZmUyZTQtYjVkNS00MzA4LTk1MWQtNTNjOTY3ZGI5YjU1XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Kelvin Harrison Jr.",
+                        character: "Taka/Scar (voz)",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTU5NzU5MDk5NV5BMl5BanBnXkFtZTgwNzE0MzUxNzM@._V1_UY317_CR131,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Seth Rogen",
+                        character: "Pumbaa (voz)",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTUxMzk4NDg2NF5BMl5BanBnXkFtZTcwOTU2NDk0Nw@@._V1_UY317_CR11,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },
@@ -217,7 +425,23 @@ class MovieService {
                 poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
                 genres: ["Ação", "Ficção Científica", "Suspense"],
                 director: "Christopher Nolan",
-                cast: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"],
+                cast: [
+                    {
+                        name: "Leonardo DiCaprio",
+                        character: "Cobb",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMjI0MTg3MzI0M15BMl5BanBnXkFtZTcwMzQyODU2Mw@@._V1_UY317_CR10,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Joseph Gordon-Levitt",
+                        character: "Arthur",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTY3NTk0NDI3Ml5BMl5BanBnXkFtZTgwNDA3NjY0MjE@._V1_UY317_CR3,0,214,317_AL_.jpg"
+                    },
+                    {
+                        name: "Ellen Page",
+                        character: "Ariadne",
+                        photo: "https://m.media-amazon.com/images/M/MV5BMTU3MzM3MDYzMV5BMl5BanBnXkFtZTcwNzk1Mzc3NA@@._V1_UY317_CR6,0,214,317_AL_.jpg"
+                    }
+                ],
                 country: "EUA",
                 language: "Inglês"
             },

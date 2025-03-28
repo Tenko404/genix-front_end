@@ -53,35 +53,28 @@ export default {
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.movie-card:active {
+    transform: scale(0.98);
 }
 
 .movie-poster {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
 }
 
+.movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Remove hover overlay and related styles */
 .movie-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    display: flex;
-    align-items: flex-end;
-    padding: 1rem;
-}
-
-.movie-card:hover .movie-overlay {
-    opacity: 1;
-}
-
-.movie-card:hover .movie-poster {
-    transform: scale(1.05);
+    display: none;
 }
 
 .movie-info {
@@ -144,6 +137,10 @@ export default {
         height: 225px;
     }
 
+    .movie-card:hover {
+        transform: none;
+    }
+
     .movie-info h3 {
         font-size: 0.9rem;
         margin-bottom: 0.3rem;
@@ -163,17 +160,12 @@ export default {
         padding: 0.4rem;
         font-size: 0.8rem;
     }
-
-    .movie-overlay {
-        opacity: 1;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.6));
-    }
 }
 
 @media (max-width: 480px) {
     .movie-card {
-        flex: 0 0 130px;
-        height: 195px;
+        flex: 0 0 140px;
+        height: 210px;
     }
 
     .movie-info h3 {

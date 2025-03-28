@@ -37,7 +37,7 @@
         </div>
         <!-- Theme toggle button -->
         <button class="theme-toggle" @click="toggleTheme" aria-label="Toggle theme">
-          <i :class="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+          <i :class="isDarkMode ? 'fas fa-moon' : 'fas fa-sun'"></i>
         </button>
       </div>
     </nav>
@@ -54,18 +54,18 @@
 <script>
 import FilmeFooter from '@/components/FilmeFooter.vue'
 import { useThemeStore } from '@/stores/themeStore'
-// Removed unused import of RouterView
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
 export default {
   name: 'App',
   components: {
     FilmeFooter,
-    // Removed RouterView as it's used directly in the template
   },
   setup() {
     const themeStore = useThemeStore()
     const isMobileMenuOpen = ref(false)
+    const { isDarkMode } = storeToRefs(themeStore)
     
     // Initialize theme when app starts
     themeStore.initTheme()
@@ -85,7 +85,7 @@ export default {
       isMobileMenuOpen,
       toggleMobileMenu,
       closeMobileMenu,
-      isDarkMode: themeStore.isDarkMode,
+      isDarkMode,
       toggleTheme: themeStore.toggleTheme
     }
   }
@@ -131,11 +131,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar {
   background: var(--header-bg);
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-content {
@@ -145,52 +148,115 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-between;
   position: relative;
+  height: 60px;
 }
 
 .nav-logo img {
-  height: 40px;
+  height: 50px;
+  transition: transform 0.2s ease;
+}
+
+.nav-logo img:hover {
+  transform: scale(1.05);
 }
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
+  align-items: center;
 }
 
 .nav-link {
   color: var(--text-color);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
-  padding: 0.5rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  position: relative;
+  letter-spacing: 0.3px;
+  border-radius: 8px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0.25rem;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), #6c5ce7);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  border-radius: 1px;
+}
+
+.nav-link:hover::after,
+.nav-link.router-link-active::after {
+  transform: scaleX(1);
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, var(--primary-color), #6c5ce7);
+  border-radius: 8px;
+  opacity: 0;
+  transform: scaleX(0.8) scaleY(0.5);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.nav-link:hover::before {
+  opacity: 0.1;
+  transform: scaleX(1) scaleY(1);
 }
 
 .nav-link:hover {
   color: var(--primary-color);
+  transform: translateY(-1px);
 }
 
 .nav-link.router-link-active {
   color: var(--primary-color);
   font-weight: 600;
+  background: linear-gradient(120deg, rgba(var(--primary-rgb), 0.1), rgba(108, 92, 231, 0.1));
+}
+
+.nav-link.router-link-active::before {
+  opacity: 0.15;
+  transform: scaleX(1) scaleY(1);
 }
 
 .theme-toggle {
   background: none;
   border: none;
   color: var(--text-color);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 50%;
-  transition: background-color 0.2s ease;
-  min-width: 44px;
-  min-height: 44px;
+  transition: all 0.2s ease;
+  min-width: 40px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 1rem;
 }
 
 .theme-toggle:hover {
   background-color: var(--hover-bg);
+  transform: rotate(15deg);
 }
 
 .mobile-menu-toggle {
@@ -252,6 +318,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .nav-content {
+    height: 50px;
+  }
+
   .nav-logo {
     display: none;
   }
@@ -266,28 +340,26 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
   }
 
-  .nav-content {
-    padding: 0 1rem;
-  }
-
   .nav-links {
     display: none;
     position: fixed;
-    top: 60px;
+    top: 58px;
     left: 0;
-    width: 240px;
+    width: 260px;
     height: auto;
     max-height: 70vh;
     background: var(--header-bg);
     flex-direction: column;
-    padding: 1rem 0.75rem;
-    gap: 0.2rem;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 1rem;
+    gap: 0.5rem;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
     z-index: 999;
     overflow-y: auto;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    border-radius: 0 0 8px 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 0 12px 0;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   
   .nav-links.active {
@@ -298,33 +370,47 @@ h1, h2, h3, h4, h5, h6 {
   .nav-link {
     display: flex;
     align-items: center;
-    padding: 0.6rem 0.75rem;
+    padding: 0.8rem 1rem;
     text-align: left;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 8px;
     transition: all 0.2s ease;
-    font-size: 0.95rem;
-    min-height: 36px;
+    font-size: 1rem;
+    min-height: 40px;
+  }
+  
+  .nav-link::after {
+    bottom: auto;
+    left: 0;
+    width: 3px;
+    height: calc(100% - 1rem);
+    top: 0.5rem;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  
+  .nav-link:hover::after,
+  .nav-link.router-link-active::after {
+    transform: scaleY(1);
   }
   
   .nav-link:hover {
-    background-color: var(--hover-bg);
-  }
-  
-  .nav-link.router-link-active {
-    background-color: var(--hover-bg);
-    color: var(--primary-color);
+    transform: translateX(4px);
   }
   
   .mobile-menu-close {
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.8rem;
+    right: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 0.75rem;
+  }
+
   .nav-content {
-    padding: 0 0.5rem;
+    height: 48px;
   }
   
   .mobile-menu-toggle {
@@ -332,15 +418,15 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .nav-links {
-    width: 220px;
+    width: 240px;
     max-height: 90vh;
-    padding: 1rem 0.75rem;
+    padding: 1.25rem 0.75rem;
   }
 
   .nav-link {
-    padding: 0.65rem 0.75rem;
+    padding: 0.75rem 0.875rem;
     font-size: 0.95rem;
-    min-height: 36px;
+    min-height: 38px;
   }
   
   .mobile-icon {
@@ -349,8 +435,8 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .mobile-menu-close {
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.6rem;
+    right: 0.6rem;
     font-size: 1.2rem;
     width: 32px;
     height: 32px;

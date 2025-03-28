@@ -665,7 +665,7 @@ export default {
   min-height: 100vh;
   background-color: var(--bg-color);
   color: var(--text-color);
-  padding: 2rem 0;
+  padding: 1rem;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -678,17 +678,27 @@ export default {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   max-width: 1100px;
   margin: 0 auto 2rem;
+  width: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.profile-header:hover .cover-image {
+  transform: scale(1.05);
 }
 
 .profile-cover {
-  height: 220px;
   position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
 }
 
 .cover-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .cover-overlay {
@@ -697,89 +707,79 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6));
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none;
 }
 
 .profile-avatar {
-  width: 140px;
-  height: 140px;
+  position: relative;
+  margin-top: -75px;
+  margin-left: 2rem;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  position: absolute;
-  bottom: -50px;
-  left: 50px;
-  border: 5px solid var(--card-bg);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
-  z-index: 5;
-}
-
-@media (max-width: 768px) {
-  .profile-avatar {
-    width: 120px;
-    height: 120px;
-    left: 30px;
-    bottom: -40px;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-avatar {
-    width: 100px;
-    height: 100px;
-    left: 20px;
-    bottom: -30px;
-  }
-}
-
-.profile-avatar:hover {
-  transform: scale(1.05);
+  border: 4px solid var(--background-dark);
+  background: var(--background-dark);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 
 .profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover img {
+  transform: scale(1.05);
 }
 
 .change-photo-btn {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background-color: var(--primary-color);
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
   color: white;
-  border: none;
-  border-radius: 50%;
   width: 36px;
   height: 36px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.profile-avatar:hover .change-photo-btn {
+  opacity: 1;
 }
 
 .change-photo-btn:hover {
-  background-color: var(--primary-color-dark);
+  background: var(--primary-color);
   transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.change-photo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.change-photo-btn i {
+  font-size: 14px;
 }
 
 .profile-info {
   padding: 70px 50px 30px;
   position: relative;
-}
-
-@media (max-width: 768px) {
-  .profile-info {
-    padding: 60px 30px 25px;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-info {
-    padding: 50px 20px 20px;
-  }
+  background: linear-gradient(to top, var(--card-bg) 80%, transparent);
 }
 
 .profile-info h1 {
@@ -787,6 +787,23 @@ export default {
   font-size: 2.2rem;
   font-weight: 700;
   color: var(--heading-color);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-info h1::after {
+  content: '✓';
+  font-size: 1rem;
+  background: var(--primary-color);
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .join-date {
@@ -795,28 +812,26 @@ export default {
   margin: 0 0 15px;
   display: flex;
   align-items: center;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
-.join-date::before {
-  content: '';
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary-color);
-  border-radius: 50%;
-  margin-right: 8px;
+.join-date:hover {
+  opacity: 1;
 }
 
 .profile-bio {
   max-width: 600px;
   margin-top: 15px;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .profile-bio textarea {
   width: 100%;
   min-height: 100px;
   padding: 12px 15px;
-  border: 1px solid var(--border-color);
+  border: 2px solid transparent;
   border-radius: 8px;
   background: var(--bg-color);
   color: var(--text-color);
@@ -824,13 +839,14 @@ export default {
   font-family: inherit;
   font-size: 0.95rem;
   line-height: 1.5;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .profile-bio textarea:focus {
   border-color: var(--primary-color);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+  transform: translateY(-2px);
 }
 
 .profile-bio p {
@@ -838,14 +854,17 @@ export default {
   cursor: pointer;
   padding: 12px 15px;
   border-radius: 8px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--text-color);
+  border: 2px solid transparent;
 }
 
 .profile-bio p:hover {
   background: var(--hover-bg);
+  border-color: var(--border-color);
+  transform: translateY(-2px);
 }
 
 /* Content layout */
@@ -861,6 +880,34 @@ export default {
 @media (max-width: 992px) {
   .profile-content {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .profile-sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-content {
+    padding: 0;
+  }
+
+  .profile-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card {
+    margin-bottom: 1rem;
+    border-radius: 8px;
   }
 }
 
@@ -899,23 +946,48 @@ export default {
 .stat-box {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  background-color: var(--bg-color);
-  border-radius: 10px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 1.2rem;
+  background: linear-gradient(145deg, var(--bg-color), var(--card-bg));
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(var(--primary-rgb), 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.stat-box:hover::before {
+  transform: translateX(100%);
 }
 
 .stat-box:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .stat-box i {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--primary-color);
-  margin-right: 1rem;
-  width: 28px;
+  margin-right: 1.2rem;
+  width: 32px;
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-box:hover i {
+  transform: scale(1.2);
 }
 
 .stat-info {
@@ -944,32 +1016,60 @@ export default {
 
 .achievement-item {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: var(--bg-color);
-  border-radius: 10px;
-  transition: transform 0.2s ease;
+  gap: 1.2rem;
+  padding: 1.2rem;
+  background: linear-gradient(145deg, var(--bg-color), var(--card-bg));
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(var(--primary-rgb), 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.achievement-item:hover::before {
+  transform: translateX(100%);
 }
 
 .achievement-item:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .achievement-icon {
-  width: 40px;
-  height: 40px;
-  background-color: var(--secondary-bg);
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(145deg, var(--bg-color), var(--card-bg));
   color: var(--secondary-text);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  font-size: 1.1rem;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .achievement-icon.unlocked {
-  background-color: rgba(76, 175, 80, 0.15);
+  background: linear-gradient(145deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.2));
   color: #4CAF50;
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.achievement-item:hover .achievement-icon {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .achievement-details {
@@ -989,18 +1089,38 @@ export default {
 }
 
 .progress-bar {
-  height: 5px;
+  height: 6px;
   background-color: var(--border-color);
   border-radius: 3px;
   overflow: hidden;
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
+  position: relative;
 }
 
 .progress {
   height: 100%;
-  background: linear-gradient(to right, var(--primary-color), var(--primary-color-dark));
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
   border-radius: 3px;
-  transition: width 0.5s ease;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.2) 50%,
+    rgba(255,255,255,0) 100%);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .unlocked-badge {
