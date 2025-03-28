@@ -21,48 +21,13 @@
       <div class="footer-social" aria-label="Redes sociais">
         <!-- Contêiner para os links das redes sociais -->
         <!-- `aria-label` fornece uma descrição para leitores de tela -->
-        
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Siga-nos no Instagram"
+        <router-link
+          to="/team"
+          class="github-link"
+          aria-label="Ver nossa equipe no GitHub"
         >
-          <!-- Link para o perfil do Instagram -->
-          <!-- `target="_blank"` abre o link em uma nova aba -->
-          <!-- `rel="noopener noreferrer"` melhora a segurança ao abrir links em novas abas -->
-          <!-- `aria-label` fornece uma descrição para leitores de tela -->
-          <i class="fab fa-instagram"></i>
-          <!-- Ícone do Instagram (Font Awesome) -->
-        </a>
-        
-        <a
-          href="https://x.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Siga-nos no X"
-        >
-          <!-- Link para o perfil do Twitter -->
-          <!-- `target="_blank"` abre o link em uma nova aba -->
-          <!-- `rel="noopener noreferrer"` melhora a segurança ao abrir links em novas abas -->
-          <!-- `aria-label` fornece uma descrição para leitores de tela -->
-          <i class="fab fa-twitter"></i>
-          <!-- Ícone do Twitter (Font Awesome) -->
-        </a>
-        
-        <a
-          href="https://github.com/lfslDEV"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visite nosso GitHub"
-        >
-          <!-- Link para o perfil do GitHub -->
-          <!-- `target="_blank"` abre o link em uma nova aba -->
-          <!-- `rel="noopener noreferrer"` melhora a segurança ao abrir links em novas abas -->
-          <!-- `aria-label` fornece uma descrição para leitores de tela -->
           <i class="fab fa-github"></i>
-          <!-- Ícone do GitHub (Font Awesome) -->
-        </a>
+        </router-link>
       </div>
       
       <div class="footer-copyright">

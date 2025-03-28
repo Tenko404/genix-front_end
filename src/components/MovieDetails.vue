@@ -147,10 +147,14 @@
                         <h2>Elenco Principal</h2>
                         <div class="cast-grid">
                             <div v-for="(actor, index) in movie.cast" :key="index" class="cast-member">
-                                <img :src="actor.photo || '/default-avatar.png'" :alt="actor.name" class="cast-photo" />
-                                <div class="cast-info">
-                                    <span class="cast-name">{{ typeof actor === 'string' ? actor : actor.name }}</span>
-                                    <span class="cast-character" v-if="typeof actor !== 'string' && actor.character">{{ actor.character }}</span>
+                                <div class="cast-photo-container">
+                                    <img :src="getActorPhoto(actor)" :alt="actor.name" class="cast-photo" />
+                                    <div class="cast-overlay">
+                                        <div class="cast-info">
+                                            <span class="cast-name">{{ actor.name }}</span>
+                                            <span class="cast-character">{{ actor.character }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -159,25 +163,60 @@
                     <div class="section">
                         <h2>Equipe Técnica</h2>
                         <div class="crew-grid">
-                            <div class="crew-item">
-                                <span class="label">Direção</span>
-                                <span class="value">{{ movie.director }}</span>
+                            <div class="crew-member" v-if="movie.director">
+                                <div class="crew-photo-container">
+                                    <img :src="getCrewPhoto(movie.director)" :alt="movie.director.name" class="crew-photo" />
+                                    <div class="crew-overlay">
+                                        <div class="crew-info">
+                                            <span class="crew-role">Direção</span>
+                                            <span class="crew-name">{{ movie.director.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="crew-item" v-if="movie.writer">
-                                <span class="label">Roteiro</span>
-                                <span class="value">{{ movie.writer }}</span>
+                            <div class="crew-member" v-if="movie.writer">
+                                <div class="crew-photo-container">
+                                    <img :src="getCrewPhoto(movie.writer)" :alt="movie.writer.name" class="crew-photo" />
+                                    <div class="crew-overlay">
+                                        <div class="crew-info">
+                                            <span class="crew-role">Roteiro</span>
+                                            <span class="crew-name">{{ movie.writer.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="crew-item" v-if="movie.producer">
-                                <span class="label">Produção</span>
-                                <span class="value">{{ movie.producer }}</span>
+                            <div class="crew-member" v-if="movie.producer">
+                                <div class="crew-photo-container">
+                                    <img :src="getCrewPhoto(movie.producer)" :alt="movie.producer.name" class="crew-photo" />
+                                    <div class="crew-overlay">
+                                        <div class="crew-info">
+                                            <span class="crew-role">Produção</span>
+                                            <span class="crew-name">{{ movie.producer.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="crew-item" v-if="movie.cinematography">
-                                <span class="label">Fotografia</span>
-                                <span class="value">{{ movie.cinematography }}</span>
+                            <div class="crew-member" v-if="movie.cinematography">
+                                <div class="crew-photo-container">
+                                    <img :src="getCrewPhoto(movie.cinematography)" :alt="movie.cinematography.name" class="crew-photo" />
+                                    <div class="crew-overlay">
+                                        <div class="crew-info">
+                                            <span class="crew-role">Fotografia</span>
+                                            <span class="crew-name">{{ movie.cinematography.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="crew-item" v-if="movie.music">
-                                <span class="label">Música</span>
-                                <span class="value">{{ movie.music }}</span>
+                            <div class="crew-member" v-if="movie.music">
+                                <div class="crew-photo-container">
+                                    <img :src="getCrewPhoto(movie.music)" :alt="movie.music.name" class="crew-photo" />
+                                    <div class="crew-overlay">
+                                        <div class="crew-info">
+                                            <span class="crew-role">Música</span>
+                                            <span class="crew-name">{{ movie.music.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -266,12 +305,40 @@ export default {
     props: {
         movie: {
             type: Object,
-            required: true
+            required: true,
+            default: () => ({
+                cast: [
+                    {
+                        name: 'Robert Downey Jr.',
+                        character: 'Tony Stark / Iron Man',
+                        photo: 'https://m.media-amazon.com/images/M/MV5BNzg1MTUyNDYxOF5BMl5BanBnXkFtZTgwNTQ4MTE2MjE@._V1_UY317_CR12,0,214,317_AL_.jpg'
+                    },
+                    {
+                        name: 'Chris Evans',
+                        character: 'Steve Rogers / Captain America',
+                        photo: 'https://m.media-amazon.com/images/M/MV5BMTU2NTg1OTQzMF5BMl5BanBnXkFtZTcwNjIyMjkyMg@@._V1_UY317_CR6,0,214,317_AL_.jpg'
+                    },
+                    {
+                        name: 'Scarlett Johansson',
+                        character: 'Natasha Romanoff / Black Widow',
+                        photo: 'https://m.media-amazon.com/images/M/MV5BMTM3OTUwMDYwNl5BMl5BanBnXkFtZTcwNTUyNzc3Nw@@._V1_UY317_CR23,0,214,317_AL_.jpg'
+                    }
+                ],
+                director: {
+                    name: 'Anthony Russo',
+                    photo: 'https://m.media-amazon.com/images/M/MV5BMTc2NjM5MTM0Ml5BMl5BanBnXkFtZTgwMTY3ODczNjM@._V1_UY317_CR10,0,214,317_AL_.jpg'
+                },
+                writer: {
+                    name: 'Christopher Markus',
+                    photo: 'https://m.media-amazon.com/images/M/MV5BMjE4NDY2MTM5N15BMl5BanBnXkFtZTgwMTY3ODczNjM@._V1_UY317_CR10,0,214,317_AL_.jpg'
+                }
+            })
         }
     },
     data() {
         return {
-            activeTab: 'overview'
+            activeTab: 'overview',
+            defaultActorPhoto: 'https://m.media-amazon.com/images/S/sash/N1QWYSqAfSJV62Y.png'
         }
     },
     methods: {
@@ -283,6 +350,12 @@ export default {
         },
         goToMovie(movieId) {
             this.$router.push(`/movie/${movieId}`);
+        },
+        getActorPhoto(actor) {
+            return actor.photo || this.defaultActorPhoto;
+        },
+        getCrewPhoto(crewMember) {
+            return crewMember.photo || this.defaultActorPhoto;
         }
     }
 }
@@ -540,47 +613,134 @@ export default {
 
 .cast-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
 }
 
 .cast-member {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.cast-member:hover {
+    transform: translateY(-5px);
+}
+
+.cast-photo-container {
+    position: relative;
+    width: 100%;
+    padding-top: 150%; /* 2:3 aspect ratio */
+    overflow: hidden;
 }
 
 .cast-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.cast-member:hover .cast-photo {
+    transform: scale(1.05);
+}
+
+.cast-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 1rem;
+    color: white;
 }
 
 .cast-info {
-    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
 }
 
 .cast-name {
-    font-weight: bold;
-    color: var(--text-color);
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .cast-character {
     font-size: 0.9rem;
-    color: var(--secondary-text);
+    opacity: 0.9;
 }
 
 .crew-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
 }
 
-.crew-item {
+.crew-member {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.crew-member:hover {
+    transform: translateY(-5px);
+}
+
+.crew-photo-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 aspect ratio */
+    overflow: hidden;
+}
+
+.crew-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.crew-member:hover .crew-photo {
+    transform: scale(1.05);
+}
+
+.crew-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 1rem;
+    color: white;
+}
+
+.crew-info {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+}
+
+.crew-role {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.crew-name {
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .reviews {
@@ -759,6 +919,24 @@ export default {
 
     .movie-actions {
         justify-content: center;
+    }
+
+    .cast-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+
+    .crew-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .cast-name, .crew-name {
+        font-size: 1rem;
+    }
+
+    .cast-character, .crew-role {
+        font-size: 0.8rem;
     }
 }
 

@@ -1,19 +1,24 @@
 <template>
   <div class="home">
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" role="banner">
       <div class="hero-content">
         <h1>Encontre o Filme Perfeito</h1>
         <p>Descubra novos filmes e organize sessões com amigos</p>
-        <div class="search-container">
+        <div class="search-container" role="search">
           <input 
             type="text"
             v-model="searchQuery" 
             @input="handleSearch"
             @keyup.enter="searchMovies"
+            @keydown.down.prevent="navigateSuggestions(1)"
+            @keydown.up.prevent="navigateSuggestions(-1)"
             placeholder="Buscar filmes..." 
             class="search-input"
             aria-label="Campo de busca de filmes"
+            aria-expanded="false"
+            aria-controls="search-suggestions"
+            aria-activedescendant=""
             autocomplete="off"
           />
           <button 
@@ -22,26 +27,67 @@
             aria-label="Buscar"
             :disabled="loading"
           >
-            <i :class="loading ? 'fas fa-spinner fa-spin' : 'fas fa-search'"></i>
+            <i :class="loading ? 'fas fa-spinner fa-spin' : 'fas fa-search'" aria-hidden="true"></i>
           </button>
+        </div>
+
+        <!-- Search Suggestions -->
+        <div 
+          v-if="searchSuggestions.length && searchQuery" 
+          id="search-suggestions"
+          class="search-suggestions"
+          role="listbox"
+        >
+          <div
+            v-for="(suggestion, index) in searchSuggestions"
+            :key="suggestion.id"
+            class="suggestion-item"
+            :class="{ 'active': activeSuggestionIndex === index }"
+            @click="selectSuggestion(suggestion)"
+            @mouseover="activeSuggestionIndex = index"
+            role="option"
+            :id="'suggestion-' + index"
+          >
+            <img 
+              :src="suggestion.poster" 
+              :alt="suggestion.title"
+              loading="lazy"
+              class="suggestion-poster"
+            />
+            <div class="suggestion-info">
+              <h3>{{ suggestion.title }}</h3>
+              <p>{{ suggestion.year }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <div class="content">
-      <div v-if="loading" class="loading">
-        <i class="fas fa-spinner fa-spin"></i>
-        <p>Carregando filmes...</p>
+      <!-- Loading Skeleton -->
+      <div v-if="loading && !searchQuery" class="loading-skeleton">
+        <div class="skeleton-featured"></div>
+        <div class="skeleton-carousel">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-movies"></div>
+        </div>
+        <div class="skeleton-carousel">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-movies"></div>
+        </div>
       </div>
 
       <div v-else-if="error" class="error">
-        <i class="fas fa-exclamation-circle"></i>
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
         <p>{{ error }}</p>
+        <button @click="retryLoading" class="retry-button">
+          Tentar Novamente
+        </button>
       </div>
 
       <template v-else>
         <div v-if="searchQuery && !trendingMovies.length" class="no-results">
-          <i class="fas fa-search"></i>
+          <i class="fas fa-search" aria-hidden="true"></i>
           <p>Nenhum filme encontrado para "{{ searchQuery }}"</p>
         </div>
 
@@ -49,7 +95,11 @@
           <div v-if="featuredMovie" class="featured-movie">
             <div class="featured-content">
               <div class="featured-poster">
-                <img :src="featuredMovie.poster" :alt="featuredMovie.title" />
+                <img 
+                  :src="featuredMovie.poster" 
+                  :alt="featuredMovie.title"
+                  loading="lazy"
+                />
               </div>
               <div class="featured-info">
                 <h2>{{ featuredMovie.title }}</h2>
@@ -58,15 +108,23 @@
                   <span>{{ featuredMovie.year }}</span>
                   <span>{{ featuredMovie.duration }}</span>
                   <span>
-                    <i class="fas fa-star"></i> {{ featuredMovie.rating }}
+                    <i class="fas fa-star" aria-hidden="true"></i> {{ featuredMovie.rating }}
                   </span>
                 </div>
                 <div class="featured-actions">
-                  <button class="action-button party" @click="startParty(featuredMovie)">
-                    <i class="fas fa-users"></i> Iniciar Party
+                  <button 
+                    class="action-button party" 
+                    @click="startParty(featuredMovie)"
+                    aria-label="Iniciar Party para {{ featuredMovie.title }}"
+                  >
+                    <i class="fas fa-users" aria-hidden="true"></i> Iniciar Party
                   </button>
-                  <button class="action-button details" @click="viewDetails(featuredMovie)">
-                    <i class="fas fa-info-circle"></i> Ver Detalhes
+                  <button 
+                    class="action-button details" 
+                    @click="viewDetails(featuredMovie)"
+                    aria-label="Ver detalhes de {{ featuredMovie.title }}"
+                  >
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> Ver Detalhes
                   </button>
                 </div>
               </div>
@@ -76,25 +134,29 @@
           <MovieCarousel 
             v-if="trendingMovies.length"
             title="Tendências" 
-            :movies="trendingMovies" 
+            :movies="trendingMovies"
+            :lazy-load="true"
           />
 
           <MovieCarousel 
             v-if="!searchQuery && recommendedMovies.length"
             title="Recomendados" 
-            :movies="recommendedMovies" 
+            :movies="recommendedMovies"
+            :lazy-load="true"
           />
 
           <MovieCarousel 
             v-if="!searchQuery && newReleases.length"
             title="Lançamentos" 
-            :movies="newReleases" 
+            :movies="newReleases"
+            :lazy-load="true"
           />
 
           <MovieCarousel 
             v-if="!searchQuery && topRatedMovies.length"
             title="Mais Bem Avaliados" 
-            :movies="topRatedMovies" 
+            :movies="topRatedMovies"
+            :lazy-load="true"
           />
         </template>
       </template>
@@ -121,7 +183,10 @@ export default {
       searchQuery: '',
       loading: true,
       error: null,
-      searchTimeout: null
+      searchTimeout: null,
+      searchSuggestions: [],
+      activeSuggestionIndex: -1,
+      debounceTime: 800
     }
   },
   methods: {
@@ -165,6 +230,8 @@ export default {
 
       // If search is empty, load default content
       if (!this.searchQuery.trim()) {
+        this.searchSuggestions = [];
+        this.activeSuggestionIndex = -1;
         this.loadMovies();
         return;
       }
@@ -173,9 +240,31 @@ export default {
       this.loading = true;
 
       // Debounce search
-      this.searchTimeout = setTimeout(() => {
-        this.searchMovies();
-      }, 500);
+      this.searchTimeout = setTimeout(async () => {
+        await this.fetchSearchSuggestions();
+      }, this.debounceTime);
+    },
+    async fetchSearchSuggestions() {
+      try {
+        const suggestions = await MovieService.searchMovies(this.searchQuery, 5);
+        this.searchSuggestions = suggestions;
+        this.activeSuggestionIndex = -1;
+      } catch (error) {
+        console.error('Erro ao buscar sugestões:', error);
+        this.searchSuggestions = [];
+      }
+    },
+    navigateSuggestions(direction) {
+      if (!this.searchSuggestions.length) return;
+      
+      this.activeSuggestionIndex = (this.activeSuggestionIndex + direction + this.searchSuggestions.length) % this.searchSuggestions.length;
+      this.$refs.searchInput.setAttribute('aria-activedescendant', `suggestion-${this.activeSuggestionIndex}`);
+    },
+    selectSuggestion(suggestion) {
+      this.searchQuery = suggestion.title;
+      this.searchSuggestions = [];
+      this.activeSuggestionIndex = -1;
+      this.searchMovies();
     },
     async searchMovies() {
       if (!this.searchQuery.trim()) {
@@ -209,10 +298,22 @@ export default {
       this.$router.push(`/movie/${movie.id}`).then(() => {
         window.scrollTo(0, 0);
       });
+    },
+    retryLoading() {
+      this.loadMovies();
     }
   },
   created() {
     this.loadMovies();
+  },
+  mounted() {
+    // Add keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+        e.preventDefault();
+        this.$refs.searchInput.focus();
+      }
+    });
   }
 }
 </script>
@@ -576,6 +677,136 @@ export default {
 
   .search-button {
     padding: 0.7rem 1.2rem;
+  }
+}
+
+/* New styles for search suggestions */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 0.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+  background-color: var(--bg-color);
+}
+
+.suggestion-poster {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 1rem;
+}
+
+.suggestion-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.suggestion-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Loading skeleton styles */
+.loading-skeleton {
+  padding: 2rem;
+}
+
+.skeleton-featured {
+  height: 400px;
+  background: linear-gradient(90deg, var(--skeleton-color) 25%, var(--skeleton-color-light) 50%, var(--skeleton-color) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.skeleton-carousel {
+  margin-bottom: 2rem;
+}
+
+.skeleton-title {
+  height: 32px;
+  width: 200px;
+  background: linear-gradient(90deg, var(--skeleton-color) 25%, var(--skeleton-color-light) 50%, var(--skeleton-color) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.skeleton-movies::before {
+  content: '';
+  display: block;
+  height: 300px;
+  background: linear-gradient(90deg, var(--skeleton-color) 25%, var(--skeleton-color-light) 50%, var(--skeleton-color) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.retry-button {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retry-button:hover {
+  background: var(--primary-color-dark);
+}
+
+/* Add CSS variables for skeleton loading */
+:root {
+  --skeleton-color: #e0e0e0;
+  --skeleton-color-light: #f0f0f0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --skeleton-color: #2a2a2a;
+    --skeleton-color-light: #3a3a3a;
   }
 }
 </style>

@@ -146,6 +146,7 @@ export default {
     -ms-overflow-style: none;
     padding: 0.5rem;
     margin: 0 -0.5rem;
+    -webkit-overflow-scrolling: touch;
 }
 
 .carousel-container::-webkit-scrollbar {
@@ -172,19 +173,22 @@ export default {
         font-size: 1.2rem;
     }
 
-    .nav-button {
-        width: 36px;
-        height: 36px;
-        font-size: 0.9rem;
+    .carousel-controls {
+        display: none;
     }
 
     .carousel-container {
         padding: 0.25rem;
+        scroll-snap-type: x mandatory;
     }
 
     .carousel-content {
         gap: 0.75rem;
         padding: 0.25rem;
+    }
+
+    .carousel-content > * {
+        scroll-snap-align: start;
     }
 }
 
