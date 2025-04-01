@@ -327,10 +327,6 @@ export default {
                 director: {
                     name: 'Anthony Russo',
                     photo: 'https://m.media-amazon.com/images/M/MV5BMTc2NjM5MTM0Ml5BMl5BanBnXkFtZTgwMTY3ODczNjM@._V1_UY317_CR10,0,214,317_AL_.jpg'
-                },
-                writer: {
-                    name: 'Christopher Markus',
-                    photo: 'https://m.media-amazon.com/images/M/MV5BMjE4NDY2MTM5N15BMl5BanBnXkFtZTgwMTY3ODczNjM@._V1_UY317_CR10,0,214,317_AL_.jpg'
                 }
             })
         }

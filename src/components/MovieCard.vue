@@ -52,8 +52,14 @@ export default {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    background: var(--card-bg);
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .movie-card:active {
@@ -63,23 +69,47 @@ export default {
 .movie-poster {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    position: relative;
 }
 
 .movie-poster img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-/* Remove hover overlay and related styles */
+.movie-card:hover .movie-poster img {
+    transform: scale(1.1);
+}
+
 .movie-overlay {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.3) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
 }
 
 .movie-info {
     color: white;
     width: 100%;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover .movie-info {
+    transform: translateY(0);
 }
 
 .movie-info h3 {
@@ -123,8 +153,15 @@ export default {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     min-height: 44px;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.movie-card:hover .details-button {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .details-button:hover {
@@ -135,10 +172,6 @@ export default {
     .movie-card {
         flex: 0 0 150px;
         height: 225px;
-    }
-
-    .movie-card:hover {
-        transform: none;
     }
 
     .movie-info h3 {

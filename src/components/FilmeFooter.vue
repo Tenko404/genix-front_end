@@ -6,18 +6,6 @@
     
     <div class="footer-content">
       <!-- Contêiner para o conteúdo do rodapé, centralizado e com largura máxima -->
-      
-      <nav class="footer-links" aria-label="Links do rodapé">
-        <!-- Barra de navegação para os links do rodapé -->
-        <!-- `aria-label` fornece uma descrição para leitores de tela -->
-        
-        <a href="/sobre" aria-label="Ir para página Sobre">Sobre</a>
-        <!-- Link para a página "Sobre" com um texto alternativo para acessibilidade -->
-        
-        <a href="/contato" aria-label="Ir para página Contato">Contato</a>
-        <!-- Link para a página "Contato" com um texto alternativo para acessibilidade -->
-      </nav>
-      
       <div class="footer-social" aria-label="Redes sociais">
         <!-- Contêiner para os links das redes sociais -->
         <!-- `aria-label` fornece uma descrição para leitores de tela -->
@@ -100,7 +88,7 @@ export default {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .footer-social a {
@@ -114,6 +102,10 @@ export default {
   color: var(--primary-color);
   transform: translateY(-2px);
   background-color: var(--hover-bg);
+}
+
+.github-link i {
+  font-size: 1.8rem;
 }
 
 /* Copyright */

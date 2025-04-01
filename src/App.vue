@@ -13,10 +13,6 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="nav-links" :class="{ 'active': isMobileMenuOpen }">
-          <!-- Close button for mobile menu -->
-          <button class="mobile-menu-close" @click="closeMobileMenu" aria-label="Close menu">
-            <i class="fas fa-times"></i>
-          </button>
           <!-- Navigation links -->
           <router-link to="/" class="nav-link" @click="closeMobileMenu">
             <i class="fas fa-home mobile-icon"></i>
@@ -55,7 +51,7 @@
 import FilmeFooter from '@/components/FilmeFooter.vue'
 import { useThemeStore } from '@/stores/themeStore'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 export default {
   name: 'App',
@@ -79,6 +75,29 @@ export default {
     const closeMobileMenu = () => {
       isMobileMenuOpen.value = false
     }
+
+    // Handle click outside mobile menu
+    const handleClickOutside = (event) => {
+      const navLinks = document.querySelector('.nav-links')
+      const menuToggle = document.querySelector('.mobile-menu-toggle')
+      
+      if (isMobileMenuOpen.value && 
+          navLinks && 
+          !navLinks.contains(event.target) && 
+          !menuToggle.contains(event.target)) {
+        closeMobileMenu()
+      }
+    }
+
+    // Add click event listener when component is mounted
+    onMounted(() => {
+      document.addEventListener('click', handleClickOutside)
+    })
+
+    // Remove event listener when component is unmounted
+    onUnmounted(() => {
+      document.removeEventListener('click', handleClickOutside)
+    })
 
     return { 
       themeStore,
@@ -335,7 +354,6 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: auto;
   }
 
-  .mobile-menu-close,
   .mobile-icon {
     display: flex;
   }

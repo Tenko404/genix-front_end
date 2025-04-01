@@ -538,21 +538,37 @@ export default {
   display: flex;
   max-width: 600px;
   margin: 0 auto;
-  background: white;
-  border-radius: 8px;
+  background: var(--card-bg);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .search-input {
   flex: 1;
-  padding: 1rem;
+  padding: 1.2rem;
   border: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-color);
+  background: transparent;
   -webkit-appearance: none;
   appearance: none;
+}
+
+.search-input::placeholder {
+  color: var(--placeholder-color, rgba(0, 0, 0, 0.85));
+  font-weight: 500;
+}
+
+/* Dark mode override */
+@media (prefers-color-scheme: dark) {
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: normal;
+  }
 }
 
 .search-input:focus {
@@ -564,14 +580,15 @@ export default {
   background: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 12px 12px 0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   min-width: 44px;
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.2rem;
 }
 
 .search-button:disabled {
@@ -581,6 +598,7 @@ export default {
 
 .search-button:hover:not(:disabled) {
   background: var(--primary-color-dark);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
@@ -683,47 +701,56 @@ export default {
 /* New styles for search suggestions */
 .search-suggestions {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   left: 0;
   right: 0;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   margin-top: 0.5rem;
   max-height: 400px;
   overflow-y: auto;
   z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .suggestion-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
+  padding: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
 }
 
 .suggestion-item:hover,
 .suggestion-item.active {
-  background-color: var(--bg-color);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .suggestion-poster {
-  width: 40px;
-  height: 60px;
+  width: 45px;
+  height: 68px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-right: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .suggestion-info h3 {
   margin: 0;
   font-size: 1rem;
   color: var(--text-color);
+  font-weight: 500;
 }
 
 .suggestion-info p {
-  margin: 0;
+  margin: 0.3rem 0 0;
   font-size: 0.9rem;
   color: var(--text-secondary);
 }
