@@ -65,12 +65,37 @@ export default {
         },
         {
             name: 'Maria Eduarda',
-            role: 'Frontend Developer',
-            bio: 'Desenvolvedor Frontend',
+            role: 'DevOps',
+            bio: 'Desenvolvimento e Operações',
             github: 'https://github.com/Tenko404',
             linkedin: 'https://www.linkedin.com/in/maria-eduarda-franklin-barbosa/',
             avatar: 'https://avatars.githubusercontent.com/Tenko404',
             status: 'online'
+        },
+        {
+            name: 'Kayo',
+            role: 'Frontend Developer',
+            bio: 'Desenvolvedor Frontend',
+            github: 'https://github.com/Kayostavares',
+            linkedin: 'https://www.linkedin.com/in/kayodossantos/',
+            avatar: 'https://avatars.githubusercontent.com/Kayostavares',
+            status: 'online'
+        },
+        {
+            name: 'Caio',
+            role: 'Administrador',
+            bio: 'Organizador do projeto',
+            github: 'https://github.com/CaioSantos-23',
+            avatar: 'https://avatars.githubusercontent.com/CaioSantos-23',
+            status: 'offline'
+        },
+        {
+            name: 'Luís Fillipe',
+            role: 'Backend Developer',
+            bio: 'Desenvolvedor Backend',
+            github: 'https://github.com/D9LTA',
+            avatar: 'https://avatars.githubusercontent.com/D9LTA',
+            status: 'offline'
         }
       ]
     }

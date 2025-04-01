@@ -47,21 +47,37 @@
 
     <div class="password-edit-controls">
       <button v-if="!passwordEditingEnabled" @click="$emit('start-password-edit')" class="edit-password-btn">
+        <i class="fas fa-key"></i>
         Alterar Senha
       </button>
       <div v-else class="password-buttons">
-        <button @click="handlePasswordSave" class="save-btn">Salvar</button>
-        <button @click="$emit('cancel-password-edit')" class="cancel-btn">Cancelar</button>
+        <button 
+          @click="handlePasswordSave" 
+          class="save-btn"
+          :disabled="isLoading"
+        >
+          <i class="fas fa-check"></i>
+          {{ isLoading ? 'Salvando...' : 'Salvar' }}
+        </button>
+        <button 
+          @click="$emit('cancel-password-edit')" 
+          class="cancel-btn"
+          :disabled="isLoading"
+        >
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
       </div>
     </div>
 
     <div v-if="validationErrors.email || validationErrors.password" class="validation-error">
+      <i class="fas fa-exclamation-circle"></i>
       {{ validationErrors.email || validationErrors.password }}
     </div>
 
     <div v-if="isLoading" class="is-loading">
       <div class="loading-spinner"></div>
-      Salvando...
+      Salvando alterações...
     </div>
   </div>
 </template>
@@ -198,13 +214,14 @@ export default {
 <style scoped>
 .profile-section {
   background-color: var(--header-bg);
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .profile-section::before {
@@ -223,14 +240,14 @@ export default {
 }
 
 .profile-section h3 {
-  margin-bottom: 2rem;
-  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
   color: var(--text-color);
   font-weight: 600;
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .profile-section h3::before {
@@ -245,199 +262,222 @@ export default {
 }
 
 .form-group {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   color: var(--secondary-text);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.form-group:focus-within label {
-  color: #4CAF50;
-  transform: translateX(4px);
 }
 
 .input-with-button {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .input-with-button input {
   flex: 1;
-  padding: 1rem 1.2rem;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  background-color: var(--search-bg);
+  min-width: 200px;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-color);
   color: var(--text-color);
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .input-with-button input:focus {
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+  border-color: var(--primary-color);
   outline: none;
-  transform: translateY(-1px);
-}
-
-.input-with-button input:disabled {
-  background-color: var(--hover-bg);
-  cursor: not-allowed;
-  opacity: 0.7;
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
 }
 
 .edit-btn {
-  padding: 1rem;
-  border: none;
-  border-radius: 12px;
-  background-color: var(--header-bg);
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
   color: var(--text-color);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 48px;
-  border: 2px solid var(--border-color);
+  min-width: 40px;
 }
 
 .edit-btn:hover {
-  background-color: var(--hover-bg);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #4CAF50;
-  color: #4CAF50;
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .password-edit-controls {
   display: flex;
-  justify-content: flex-start;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .password-buttons {
   display: flex;
-  gap: 1.5rem;
+  gap: 0.75rem;
+  width: 100%;
 }
 
 .edit-password-btn,
 .save-btn,
 .cancel-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid transparent;
-  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
-  display: inline-flex;
+  transition: all 0.3s ease;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
-  min-width: 80px;
+  gap: 0.5rem;
+  flex: 1;
 }
 
 .edit-password-btn {
-  background-color: transparent;
+  background: transparent;
+  border: 1px solid var(--border-color);
   color: var(--text-color);
-  border-color: var(--border-color);
+  width: auto;
+  min-width: 140px;
 }
 
 .edit-password-btn:hover {
-  border-color: #4CAF50;
-  color: #4CAF50;
-  background-color: rgba(76, 175, 80, 0.05);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(var(--primary-rgb), 0.1);
 }
 
 .save-btn {
-  background-color: #4CAF50;
-  border-color: #4CAF50;
+  background: var(--primary-color);
+  border: 2px solid var(--primary-color);
   color: white;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.save-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.save-btn:hover::before {
+  width: 200%;
+  height: 200%;
 }
 
 .save-btn:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+}
+
+.save-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15);
+}
+
+.save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: var(--primary-color);
+  transform: none;
+  box-shadow: none;
+}
+
+.save-btn i {
+  margin-right: 0.5rem;
+  font-size: 1rem;
 }
 
 .cancel-btn {
-  background-color: #f44336;
-  border-color: #f44336;
-  color: white;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  color: var(--text-color);
 }
 
 .cancel-btn:hover {
-  background-color: #e53935;
-  border-color: #e53935;
+  background: var(--error-color);
+  border-color: var(--error-color);
+  color: white;
+  transform: translateY(-2px);
 }
 
 .validation-error {
-  color: #ff4444;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  color: var(--error-color);
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  padding: 0.8rem;
+  background: rgba(var(--error-rgb), 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.validation-error i {
+  color: var(--error-color);
+  font-size: 1rem;
 }
 
 .is-loading {
-  opacity: 0.7;
-  pointer-events: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background: var(--bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  font-weight: 500;
+  opacity: 0.9;
 }
 
 .loading-spinner {
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-right: 0.5rem;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media (max-width: 768px) {
   .profile-section {
-    padding: 2rem;
-  }
-
-  .password-edit-controls {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .password-buttons {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .edit-password-btn,
-  .save-btn,
-  .cancel-btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-section {
-    padding: 1.5rem;
-  }
-
-  .profile-section h3 {
-    font-size: 1.3rem;
+    padding: 1.2rem;
   }
 
   .input-with-button {
@@ -445,20 +485,79 @@ export default {
     gap: 0.5rem;
   }
 
-  .edit-btn {
+  .input-with-button input {
     width: 100%;
-    flex-direction: row;
-    gap: 0.5rem;
   }
 
-  .edit-btn i {
-    margin: 0;
+  .edit-btn {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  .password-edit-controls {
+    margin-top: 1.2rem;
+  }
+
+  .password-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .edit-password-btn,
   .save-btn,
   .cancel-btn {
-    font-size: 0.8125rem;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .is-loading {
+    flex-direction: row;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-section {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .profile-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .input-with-button input {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .password-edit-controls {
+    margin-top: 1rem;
+  }
+
+  .password-buttons {
+    gap: 0.6rem;
+  }
+
+  .edit-password-btn,
+  .save-btn,
+  .cancel-btn {
+    padding: 0.9rem;
+  }
+
+  .is-loading {
+    padding: 0.8rem;
+    font-size: 0.9rem;
   }
 }
 </style> 
