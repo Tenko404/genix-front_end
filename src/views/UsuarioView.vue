@@ -283,14 +283,9 @@ export default {
   methods: {
     async fetchUserData() {
       try {
-        const userData = await userService.getUserProfile()
-        this.user = userData.user
-        this.watchedMovies = userData.stats.watchedMovies
-        this.totalReviews = userData.stats.totalReviews
-        this.totalLists = userData.stats.totalLists
-        this.memberSince = userData.memberSince
-        this.lastActive = userData.lastActive
-        this.selectedGenres = userData.preferences.selectedGenres || []
+        const user = await userService.getUserProfile()
+        this.user = user
+        this.selectedGenres = user.favoriteGenres || []
       } catch (error) {
         throw new Error('Falha ao carregar dados do usuário')
       }
@@ -302,7 +297,8 @@ export default {
     async handlePhotoUpload(file) {
       try {
         this.isSaving = true
-        const photoUrl = await userService.uploadProfilePhoto(file)
+        const user = await userService.getUserProfile()
+        const photoUrl = await userService.uploadProfilePhoto(user.id, file)
         this.user.photo = photoUrl
         this.showSuccess('Foto de perfil atualizada com sucesso!')
       } catch (error) {
@@ -314,12 +310,16 @@ export default {
     async handleEmailSave(email) {
       try {
         this.isSaving = true
-        await userService.updateEmail(email)
-        this.user.email = email
+        const updated = await userService.updateProfile({
+          id: this.user.id,
+          name: this.user.name,
+          email
+        })
+        this.user = updated
         this.emailEditingEnabled = false
         this.showSuccess('E-mail atualizado com sucesso!')
       } catch (error) {
-        this.handleError('Erro ao atualizar e-mail')
+        this.handleError(error.message)
       } finally {
         this.isSaving = false
       }
@@ -327,24 +327,27 @@ export default {
     async handlePasswordSave({ currentPassword, newPassword }) {
       try {
         this.isSaving = true
-        await userService.updatePassword(currentPassword, newPassword)
-        this.currentPassword = currentPassword
-        this.newPassword = newPassword
+        // Busca usuário atual
+        const user = await userService.getUserProfile()
+        if (user.password !== currentPassword) {
+          throw new Error('Senha atual incorreta')
+        }
+        await userService.updatePassword({ id: user.id, password: newPassword })
+        this.currentPassword = ''
+        this.newPassword = ''
         this.passwordEditingEnabled = false
         this.showSuccess('Senha atualizada com sucesso!')
       } catch (error) {
-        this.handleError('Erro ao atualizar senha')
+        this.handleError(error.message)
       } finally {
         this.isSaving = false
       }
     },
     async handleGenreToggle(genreId) {
       try {
-        const index = this.selectedGenres.indexOf(genreId)
         let newGenres = [...this.selectedGenres]
-
+        const index = newGenres.indexOf(genreId)
         if (index === -1) {
-          // Adding a genre
           if (newGenres.length < 5) {
             newGenres.push(genreId)
             this.isSaving = true
@@ -356,7 +359,6 @@ export default {
             return
           }
         } else {
-          // Removing a genre
           newGenres = newGenres.filter(id => id !== genreId)
           this.isSaving = true
           await userService.updateGenres(newGenres)
@@ -422,7 +424,9 @@ export default {
     async handleLogout() {
       try {
         this.isSaving = true
-        await userService.logout()
+        // Limpa autenticação fake
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
         this.$router.push('/login')
       } catch (error) {
         this.handleError('Erro ao fazer logout')

@@ -2,7 +2,7 @@
   <div id="app">
     <!-- Meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <nav class="navbar">
+    <nav v-if="$route.meta.showNavbar" class="navbar">
       <div class="nav-content">
         <!-- Logo linking to home -->
         <router-link to="/" class="nav-logo">
