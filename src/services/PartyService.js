@@ -1,100 +1,89 @@
 import axios from 'axios';
 
+const API_URL = 'http://localhost:3000';
+
 class PartyService {
-    constructor() {
-        this.api = axios.create({
-            baseURL: process.env.VUE_APP_API_URL || 'http://localhost:3000/api',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+    // Cria uma nova party
+    async createParty(hostId, hostGenres) {
+        const response = await axios.post(`${API_URL}/parties`, {
+            hostId,
+            hostGenres,
+            members: [hostId],
+            movies: [],
+            likes: {},
+            createdAt: new Date().toISOString()
         });
+        // Salva estado da party no localStorage
+        localStorage.setItem('partyId', response.data.id);
+        localStorage.setItem('partyRole', 'host');
+        return response.data;
     }
 
-    // Create a new party
-    async createParty(userId, userGenres, selectedMovie = null) {
-        try {
-            const response = await this.api.post('/party/create', {
-                userId,
-                userGenres,
-                selectedMovie
+    // Entra em uma party existente
+    async joinParty(partyId, userId, userGenres) {
+        const partyRes = await axios.get(`${API_URL}/parties/${partyId}`);
+        const party = partyRes.data;
+        if (!party.members.includes(userId)) {
+            party.members.push(userId);
+            party[`genres_${userId}`] = userGenres;
+            await axios.patch(`${API_URL}/parties/${partyId}`, {
+                members: party.members,
+                [`genres_${userId}`]: userGenres
             });
-            return response.data;
-        } catch (error) {
-            console.error('Error creating party:', error);
-            throw error;
         }
+        // Salva estado da party no localStorage
+        localStorage.setItem('partyId', partyId);
+        localStorage.setItem('partyRole', 'guest');
+        return party;
     }
 
-    // Join an existing party
-    async joinParty(partyCode, userId, userGenres) {
-        try {
-            const response = await this.api.post(`/party/join/${partyCode}`, {
-                userId,
-                userGenres
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error joining party:', error);
-            throw error;
-        }
-    }
-
-    // Get party status
-    async getPartyStatus(partyId) {
-        try {
-            const response = await this.api.get(`/party/${partyId}/status`);
-            return response.data;
-        } catch (error) {
-            console.error('Error getting party status:', error);
-            throw error;
-        }
-    }
-
-    // Leave party
+    // Sai da party
     async leaveParty(partyId, userId) {
-        try {
-            const response = await this.api.post(`/party/${partyId}/leave`, { userId });
-            return response.data;
-        } catch (error) {
-            console.error('Error leaving party:', error);
-            throw error;
-        }
+        const partyRes = await axios.get(`${API_URL}/parties/${partyId}`);
+        const party = partyRes.data;
+        party.members = party.members.filter(id => id !== userId);
+        await axios.patch(`${API_URL}/parties/${partyId}`, { members: party.members });
+        // Limpa estado da party no localStorage
+        localStorage.removeItem('partyId');
+        localStorage.removeItem('partyRole');
+        return party;
     }
 
-    // Get recommended movies based on matched genres
-    async getRecommendedMovies(partyId) {
-        try {
-            const response = await this.api.get(`/party/${partyId}/movies`);
-            return response.data;
-        } catch (error) {
-            console.error('Error getting recommended movies:', error);
-            throw error;
-        }
+    // Compartilha filmes/gêneros entre membros
+    async getPartyData(partyId) {
+        const partyRes = await axios.get(`${API_URL}/parties/${partyId}`);
+        return partyRes.data;
     }
 
-    // Like a movie
+    // Adiciona filme à party
+    async addMovieToParty(partyId, movie) {
+        const partyRes = await axios.get(`${API_URL}/parties/${partyId}`);
+        const party = partyRes.data;
+        party.movies.push(movie);
+        await axios.patch(`${API_URL}/parties/${partyId}`, { movies: party.movies });
+        return party;
+    }
+
+    // Like em filme
     async likeMovie(partyId, userId, movieId) {
-        try {
-            const response = await this.api.post(`/party/${partyId}/like`, {
-                userId,
-                movieId
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error liking movie:', error);
-            throw error;
+        const partyRes = await axios.get(`${API_URL}/parties/${partyId}`);
+        const party = partyRes.data;
+        if (!party.likes) party.likes = {};
+        if (!party.likes[movieId]) party.likes[movieId] = [];
+        if (!party.likes[movieId].includes(userId)) {
+            party.likes[movieId].push(userId);
         }
+        await axios.patch(`${API_URL}/parties/${partyId}`, { likes: party.likes });
+        return party;
     }
 
-    // Check for movie match
+    // Checa se houve match
     async checkMatch(partyId, movieId) {
-        try {
-            const response = await this.api.get(`/party/${partyId}/match/${movieId}`);
-            return response.data;
-        } catch (error) {
-            console.error('Error checking match:', error);
-            throw error;
-        }
+        const partyRes = await axios.get(`${API_URL}/parties/${partyId}`);
+        const party = partyRes.data;
+        const members = party.members || [];
+        const likes = party.likes && party.likes[movieId] ? party.likes[movieId] : [];
+        return { isMatch: likes.length === members.length };
     }
 }
 

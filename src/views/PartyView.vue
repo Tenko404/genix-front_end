@@ -72,41 +72,14 @@
                         <p>Aguardando parceiro entrar na party...</p>
                     </div>
                 </div>
+                <button v-if="partnerJoined" @click="goToTinderMode" class="tinder-mode-btn">
+                    <i class="fas fa-fire"></i> Ir para o Tinder Mode
+                </button>
             </div>
 
             <!-- Movie Matching Section -->
-            <div class="movie-matching" v-if="partnerJoined && !matchFound">
-                <div class="movies-grid">
-                    <div v-for="movie in movies" :key="movie.id" class="movie-card" :class="{ 'active': movie.id === currentMovie?.id }">
-                        <div class="movie-poster-container">
-                            <img :src="movie.poster" :alt="movie.title" class="movie-poster" />
-                            <div class="movie-rating">
-                                <i class="fas fa-star"></i>
-                                {{ movie.rating }}
-                            </div>
-                        </div>
-                        <div class="movie-info">
-                            <h3>{{ movie.title }}</h3>
-                            <div class="movie-meta">
-                                <span><i class="fas fa-calendar"></i> {{ movie.year }}</span>
-                                <span><i class="fas fa-clock"></i> {{ movie.duration }}</span>
-                            </div>
-                        </div>
-                        <div class="swipe-actions" v-if="movie.id === currentMovie?.id">
-                            <button @click="dislikeMovie" class="swipe-button dislike" title="Não gostei">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <button @click="likeMovie" class="swipe-button like" title="Gostei">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="no-more-movies" v-if="movies.length === 0">
-                    <i class="fas fa-film"></i>
-                    <h3>Não há mais filmes para mostrar</h3>
-                    <p>Aguarde enquanto buscamos mais opções...</p>
-                </div>
+            <div class="movie-matching" v-if="false">
+                <!-- Removido: filmes não aparecem mais aqui -->
             </div>
 
             <!-- Match Found Section -->
@@ -134,6 +107,9 @@
                         <i class="fas fa-sync"></i> Continuar Procurando
                     </button>
                 </div>
+                <button @click="leaveTinderMode" class="continue-button">
+                    <i class="fas fa-arrow-left"></i> Voltar para a Party
+                </button>
             </div>
 
             <button @click="leaveParty" class="leave-party-button">
@@ -179,7 +155,8 @@ export default {
             isHost: false,
             matchHistory: [],
             likedMovies: new Set(),
-            dislikedMovies: new Set()
+            dislikedMovies: new Set(),
+            inTinderMode: false
         }
     },
     methods: {
@@ -187,22 +164,19 @@ export default {
             try {
                 this.creatingParty = true;
                 this.error = null;
-                
                 const movieId = this.$route.query.movieId;
                 if (movieId) {
                     this.selectedMovie = await MovieService.getMovieDetails(movieId);
                 }
-
                 const response = await PartyService.createParty(
                     this.userId,
-                    this.userGenres,
-                    this.selectedMovie
+                    this.userGenres
                 );
-
-                this.currentPartyCode = response.partyCode;
-                this.partyId = response.partyId;
+                this.currentPartyCode = response.id;
+                this.partyId = response.id;
                 this.inParty = true;
                 this.isHost = true;
+                this.partnerJoined = false;
                 this.initializeWebSocket();
                 this.$toast.success('Party criada com sucesso!');
             } catch (error) {
@@ -218,24 +192,23 @@ export default {
                 this.error = 'Por favor, digite um código de party válido.';
                 return;
             }
-
             try {
                 this.joiningParty = true;
                 this.error = null;
-
                 const response = await PartyService.joinParty(
                     this.partyCode,
                     this.userId,
                     this.userGenres
                 );
-
-                this.currentPartyCode = this.partyCode;
-                this.partyId = response.partyId;
+                this.currentPartyCode = response.id;
+                this.partyId = response.id;
                 this.inParty = true;
-                this.partnerJoined = true;
-                this.partnerName = response.hostName;
-                this.partnerPhoto = response.hostPhoto;
-                this.partnerGenres = response.hostGenres;
+                this.isHost = false;
+                this.partnerJoined = response.members.length > 1;
+                const partnerId = response.members.find(id => id !== this.userId);
+                this.partnerName = 'Host';
+                this.partnerPhoto = '';
+                this.partnerGenres = response[`genres_${partnerId}`] || [];
                 this.initializeWebSocket();
                 this.loadMovies();
                 this.$toast.success('Você entrou na party!');
@@ -289,13 +262,28 @@ export default {
         },
 
         async loadUserGenres() {
-            // In a real app, this would come from your user profile/state
-            this.userGenres = ['Ação', 'Comédia', 'Ficção Científica'];
-            this.userId = 'user123'; // This should come from your auth system
+            const user = JSON.parse(localStorage.getItem('user'));
+            this.userId = user?.id || 'user123';
+            this.userPhoto = user?.photo || require('@/assets/elonmusk.jpg');
+            this.userGenres = user?.favoriteGenres || ['Ação', 'Comédia', 'Ficção Científica'];
+            const partyId = localStorage.getItem('partyId');
+            if (partyId) {
+                this.partyId = partyId;
+                this.inParty = true;
+                const party = await PartyService.getPartyData(partyId);
+                this.currentPartyCode = party.id;
+                this.isHost = localStorage.getItem('partyRole') === 'host';
+                this.partnerJoined = party.members.length > 1;
+                if (this.partnerJoined) {
+                    const partnerId = party.members.find(id => id !== this.userId);
+                    this.partnerName = 'Convidado';
+                    this.partnerPhoto = '';
+                    this.partnerGenres = party[`genres_${partnerId}`] || [];
+                }
+            }
         },
 
         initializeWebSocket() {
-            // Initialize WebSocket connection for real-time updates
             console.log('WebSocket connection initialized for party:', this.partyId);
         },
 
@@ -403,6 +391,16 @@ export default {
             this.matchedMovie = data.movie;
             this.matchHistory.push(data.movie);
             this.$toast.success('Match encontrado! 🎉');
+        },
+
+        goToTinderMode() {
+            this.$router.push({ path: '/tinder', query: { partyId: this.partyId } });
+        },
+
+        leaveTinderMode() {
+            this.inTinderMode = false;
+            this.matchFound = false;
+            this.matchedMovie = null;
         }
     },
     created() {
